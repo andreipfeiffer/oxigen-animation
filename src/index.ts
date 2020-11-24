@@ -54,7 +54,7 @@ export function init(data: Init) {
   scene.appendChild(target);
 }
 
-export function setData(data: Progres) {
+export function updateProgress(data: Progres) {
   const { total_strans, donatori } = data;
   console.log("setData()", { total_strans, donatori });
 }

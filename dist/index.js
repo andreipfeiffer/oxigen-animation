@@ -109,7 +109,7 @@ var oxygen_animation = (function (exports, anime) {
       const target = drawTarget();
       scene.appendChild(target);
   }
-  function setData(data) {
+  function updateProgress(data) {
       const { total_strans, donatori } = data;
       console.log("setData()", { total_strans, donatori });
   }
@@ -121,7 +121,7 @@ var oxygen_animation = (function (exports, anime) {
 
   exports.animateBubble = animateBubble;
   exports.init = init;
-  exports.setData = setData;
+  exports.updateProgress = updateProgress;
 
   Object.defineProperty(exports, '__esModule', { value: true });
 

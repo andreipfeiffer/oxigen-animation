@@ -11,6 +11,6 @@ declare type Donator = {
     suma: number;
 };
 export declare function init(data: Init): void;
-export declare function setData(data: Progres): void;
+export declare function updateProgress(data: Progres): void;
 export declare function animateBubble(data?: Donator): void;
 export {};
