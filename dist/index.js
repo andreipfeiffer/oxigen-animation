@@ -113,7 +113,33 @@ var oxygen_animation = (function (exports, anime) {
   let total = 0;
   let suma = 0;
   let donatori = 0;
-  function animate() {
+  function init(data) {
+      if (scene) {
+          scene.parentNode.removeChild(scene);
+      }
+      total = data.total_necesar;
+      const size = data.element.getBoundingClientRect();
+      width = size.width;
+      // store scene reference
+      scene = generateScene(width, width);
+      data.element.appendChild(scene);
+      renderScene();
+  }
+  function update(data) {
+      if (!scene) {
+          throw new Error("Not initialized! Call .init() first");
+      }
+      suma = data.total_strans;
+      donatori = data.donatori;
+      const progress_size = getProgressWidth();
+      progress_circle.setAttribute("r", `${progress_size / 2}`);
+      const title_y = getTitleY();
+      text_necesar.setAttribute("y", `${title_y}`);
+      text_necesar_suma.setAttribute("y", `${title_y}`);
+  }
+  function animate(data = { nume: "", suma: 0 }) {
+      const { nume, suma } = data;
+      console.log("animate()", { nume, suma });
       if (!scene) {
           throw new Error("Not initialized! Call .init() first");
       }
@@ -134,35 +160,6 @@ var oxygen_animation = (function (exports, anime) {
               scene.removeChild(path);
           },
       });
-  }
-  function init(data) {
-      if (scene) {
-          scene.parentNode.removeChild(scene);
-      }
-      total = data.total_necesar;
-      const size = data.element.getBoundingClientRect();
-      width = size.width;
-      // store scene reference
-      scene = generateScene(width, width);
-      data.element.appendChild(scene);
-      renderScene();
-  }
-  function updateProgress(data) {
-      if (!scene) {
-          throw new Error("Not initialized! Call .init() first");
-      }
-      suma = data.total_strans;
-      donatori = data.donatori;
-      const progress_size = getProgressWidth();
-      progress_circle.setAttribute("r", `${progress_size / 2}`);
-      const title_y = getTitleY();
-      text_necesar.setAttribute("y", `${title_y}`);
-      text_necesar_suma.setAttribute("y", `${title_y}`);
-  }
-  function animateBubble(data = { nume: "", suma: 0 }) {
-      const { nume, suma } = data;
-      console.log("animateBubble()", { nume, suma });
-      animate();
   }
   function renderScene() {
       const { x, y } = getCenter();
@@ -209,9 +206,9 @@ var oxygen_animation = (function (exports, anime) {
       return (y - getProgressWidth() / 2) / 2;
   }
 
-  exports.animateBubble = animateBubble;
+  exports.animate = animate;
   exports.init = init;
-  exports.updateProgress = updateProgress;
+  exports.update = update;
 
   Object.defineProperty(exports, '__esModule', { value: true });
 

@@ -9,6 +9,7 @@ Animation for the Oxigen Website.
 1. **Install anime.js dependency**:
 
 Include it from CDN:
+
 ```
 <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
 ```
@@ -20,6 +21,7 @@ Install it from npm:
 ```
 npm install animejs
 ```
+
 or simply [download](https://github.com/juliangarnier/anime/) it.
 
 <br />
@@ -27,6 +29,7 @@ or simply [download](https://github.com/juliangarnier/anime/) it.
 2. **Install animation package**:
 
 Include it from Github
+
 ```
 <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
 ```
@@ -34,6 +37,7 @@ Include it from Github
 or
 
 Install it from Github:
+
 ```
 npm install git+https://github.com/andreipfeiffer/oxigen-animation.git
 ```
@@ -58,26 +62,23 @@ Should be called when you want to initialize the package:
 oxygen_animation.init({
   // the container for the animation
   element: document.querySelector("#animation-scene"),
-
   total_necesar: 250000000,
-  total_strans: 800000,
-  donatori: 125,
 });
 ```
 
-### .updateProgress()
+### .update()
 
 ```js
-oxygen_animation.updateProgress({
+oxygen_animation.update({
   total_strans: 1100000,
   donatori: 146,
 });
 ```
 
-### .animateBubble()
+### .animate()
 
 ```js
-oxygen_animation.animateBubble({
+oxygen_animation.animate({
   nume: "Andrei P.",
   suma: 200,
 });

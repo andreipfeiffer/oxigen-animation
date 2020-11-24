@@ -24,7 +24,43 @@ let total = 0;
 let suma = 0;
 let donatori = 0;
 
-function animate() {
+export function init(data: Init) {
+  if (scene) {
+    scene.parentNode.removeChild(scene);
+  }
+
+  total = data.total_necesar;
+
+  const size = data.element.getBoundingClientRect();
+  width = size.width;
+
+  // store scene reference
+  scene = generateScene(width, width);
+  data.element.appendChild(scene);
+
+  renderScene();
+}
+
+export function update(data: Progres) {
+  if (!scene) {
+    throw new Error("Not initialized! Call .init() first");
+  }
+
+  suma = data.total_strans;
+  donatori = data.donatori;
+
+  const progress_size = getProgressWidth();
+  progress_circle.setAttribute("r", `${progress_size / 2}`);
+
+  const title_y = getTitleY();
+  text_necesar.setAttribute("y", `${title_y}`);
+  text_necesar_suma.setAttribute("y", `${title_y}`);
+}
+
+export function animate(data: Donator = { nume: "", suma: 0 }) {
+  const { nume, suma } = data;
+  console.log("animate()", { nume, suma });
+
   if (!scene) {
     throw new Error("Not initialized! Call .init() first");
   }
@@ -49,46 +85,6 @@ function animate() {
       scene.removeChild(path);
     },
   });
-}
-
-export function init(data: Init) {
-  if (scene) {
-    scene.parentNode.removeChild(scene);
-  }
-
-  total = data.total_necesar;
-
-  const size = data.element.getBoundingClientRect();
-  width = size.width;
-
-  // store scene reference
-  scene = generateScene(width, width);
-  data.element.appendChild(scene);
-
-  renderScene();
-}
-
-export function updateProgress(data: Progres) {
-  if (!scene) {
-    throw new Error("Not initialized! Call .init() first");
-  }
-
-  suma = data.total_strans;
-  donatori = data.donatori;
-
-  const progress_size = getProgressWidth();
-  progress_circle.setAttribute("r", `${progress_size / 2}`);
-
-  const title_y = getTitleY();
-  text_necesar.setAttribute("y", `${title_y}`);
-  text_necesar_suma.setAttribute("y", `${title_y}`);
-}
-
-export function animateBubble(data: Donator = { nume: "", suma: 0 }) {
-  const { nume, suma } = data;
-  console.log("animateBubble()", { nume, suma });
-
-  animate();
 }
 
 function renderScene() {

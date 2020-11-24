@@ -17,7 +17,7 @@ function update() {
   const suma = +update_form.querySelector('input[name="suma"]').value;
   const donatori = +update_form.querySelector('input[name="donatori"]').value;
 
-  oxygen_animation.updateProgress({
+  oxygen_animation.update({
     donatori,
     total_strans: suma,
   });
@@ -27,7 +27,7 @@ function animate() {
   const nume = animate_form.querySelector('input[name="nume"]').value;
   const suma = +animate_form.querySelector('input[name="suma"]').value;
 
-  oxygen_animation.animateBubble({ nume, suma });
+  oxygen_animation.animate({ nume, suma });
 }
 
 const init_form = document.querySelector("#init-form");

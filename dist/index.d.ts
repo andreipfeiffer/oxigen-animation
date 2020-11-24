@@ -1,6 +1,6 @@
 export declare function init(data: Init): void;
-export declare function updateProgress(data: Progres): void;
-export declare function animateBubble(data?: Donator): void;
+export declare function update(data: Progres): void;
+export declare function animate(data?: Donator): void;
 declare type Init = {
     element: HTMLElement;
     total_necesar: number;
