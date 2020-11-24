@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
-    "declaration": true,
-    "declarationDir": "./dist",
+    "declaration": false,
     "module": "es6",
     "noImplicitAny": true,
     "allowSyntheticDefaultImports": true,
