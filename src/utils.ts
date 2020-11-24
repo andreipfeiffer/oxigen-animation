@@ -27,8 +27,9 @@ export function generateScene(width: number, height: number) {
 
   const svg = document.createElementNS(svgNS, "svg");
   svg.style.display = "block";
-  svg.setAttributeNS(null, "width", `${width}`);
-  svg.setAttributeNS(null, "height", `${height}`);
+  svg.setAttributeNS(null, "viewBox", `0 0 ${width} ${height}`);
+  svg.setAttributeNS(null, "x", `0px`);
+  svg.setAttributeNS(null, "y", `0px`);
   return svg;
 }
 
@@ -121,12 +122,11 @@ export function drawText(
   }
 ) {
   const { fill, x, y, size, valign = "middle" } = attrs;
-  const ratio = getRatio();
 
   const text = document.createElementNS(svgNS, "text");
   text.setAttributeNS(null, "text-anchor", "middle");
   text.setAttributeNS(null, "alignment-baseline", valign);
-  text.setAttributeNS(null, "font-size", `${size * ratio}`);
+  text.setAttributeNS(null, "font-size", `${size}`);
   text.setAttributeNS(null, "font-family", `Montserrat`);
   text.setAttributeNS(null, "fill", fill);
   text.setAttributeNS(null, "x", `${x}`);
@@ -138,14 +138,6 @@ export function drawText(
 
 export function formatNumber(value: number) {
   return Intl.NumberFormat("ro", {}).format(value);
-}
-
-function getRatio() {
-  return SCENE.w / 650;
-}
-
-export function getScaled(val: number) {
-  return val * getRatio();
 }
 
 type Point = {

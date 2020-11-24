@@ -24,8 +24,9 @@ var oxygen_animation = (function (exports, anime) {
       SCENE.h = height;
       const svg = document.createElementNS(svgNS, "svg");
       svg.style.display = "block";
-      svg.setAttributeNS(null, "width", `${width}`);
-      svg.setAttributeNS(null, "height", `${height}`);
+      svg.setAttributeNS(null, "viewBox", `0 0 ${width} ${height}`);
+      svg.setAttributeNS(null, "x", `0px`);
+      svg.setAttributeNS(null, "y", `0px`);
       return svg;
   }
   function getPathCoords(start) {
@@ -82,11 +83,10 @@ var oxygen_animation = (function (exports, anime) {
   }
   function drawText(value, attrs) {
       const { fill, x, y, size, valign = "middle" } = attrs;
-      const ratio = getRatio();
       const text = document.createElementNS(svgNS, "text");
       text.setAttributeNS(null, "text-anchor", "middle");
       text.setAttributeNS(null, "alignment-baseline", valign);
-      text.setAttributeNS(null, "font-size", `${size * ratio}`);
+      text.setAttributeNS(null, "font-size", `${size}`);
       text.setAttributeNS(null, "font-family", `Montserrat`);
       text.setAttributeNS(null, "fill", fill);
       text.setAttributeNS(null, "x", `${x}`);
@@ -97,19 +97,13 @@ var oxygen_animation = (function (exports, anime) {
   function formatNumber(value) {
       return Intl.NumberFormat("ro", {}).format(value);
   }
-  function getRatio() {
-      return SCENE.w / 650;
-  }
-  function getScaled(val) {
-      return val * getRatio();
-  }
 
   let scene = null;
   let total_circle = null;
   let text_necesar = null;
   let text_necesar_suma = null;
   let progress_circle = null;
-  let width = 0;
+  const WIDTH = 650;
   let total = 0;
   let suma = 0;
   let donatori = 0;
@@ -118,10 +112,8 @@ var oxygen_animation = (function (exports, anime) {
           scene.parentNode.removeChild(scene);
       }
       total = data.total_necesar;
-      const size = data.element.getBoundingClientRect();
-      width = size.width;
       // store scene reference
-      scene = generateScene(width, width);
+      scene = generateScene(WIDTH, WIDTH);
       data.element.appendChild(scene);
       renderScene();
   }
@@ -182,7 +174,7 @@ var oxygen_animation = (function (exports, anime) {
           y: title_y,
           valign: "baseline",
       });
-      text_necesar.setAttribute("transform", `translate(0, -${getScaled(5)})`);
+      text_necesar.setAttribute("transform", `translate(0, -5)`);
       scene.appendChild(text_necesar);
       text_necesar_suma = drawText(formatNumber(total), {
           fill: "#ffffff" /* white */,
@@ -191,14 +183,14 @@ var oxygen_animation = (function (exports, anime) {
           y: title_y,
           valign: "hanging",
       });
-      text_necesar_suma.setAttribute("transform", `translate(0, ${getScaled(5)})`);
+      text_necesar_suma.setAttribute("transform", `translate(0, 5)`);
       scene.appendChild(text_necesar_suma);
   }
   function getProgressWidth() {
       if (suma === 0) {
           return 0;
       }
-      return (suma * width) / total;
+      return (suma * WIDTH) / total;
   }
   function getTitleY() {
       const { y } = getCenter();

@@ -1,6 +1,6 @@
 // oxygen_animation is a global identifier
 // if you use ES6 modules, you can also use it as:
-import * as oxygen_animation from "./index";
+// import * as oxygen_animation from "./index";
 
 function init() {
   const stage = document.querySelector("#animation-stage");
@@ -31,7 +31,6 @@ function animate() {
 
 const init_form = document.querySelector("#init-form");
 
-window.addEventListener("resize", init);
 init_form.addEventListener(
   "submit",
   (event) => {

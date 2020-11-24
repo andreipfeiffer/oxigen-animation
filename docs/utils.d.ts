@@ -26,7 +26,6 @@ export declare function drawText(value: string, attrs: {
     valign?: "hanging" | "middle" | "baseline";
 }): SVGTextElement;
 export declare function formatNumber(value: number): string;
-export declare function getScaled(val: number): number;
 declare type Point = {
     x: number;
     y: number;

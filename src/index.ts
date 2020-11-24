@@ -6,7 +6,6 @@ import {
   drawCircle,
   drawText,
   getCenter,
-  getScaled,
   formatNumber,
   Color,
 } from "./utils";
@@ -19,7 +18,7 @@ let text_necesar_suma: SVGTextElement = null;
 
 let progress_circle: SVGCircleElement = null;
 
-let width = 0;
+const WIDTH = 650;
 let total = 0;
 let suma = 0;
 let donatori = 0;
@@ -31,11 +30,8 @@ export function init(data: Init) {
 
   total = data.total_necesar;
 
-  const size = data.element.getBoundingClientRect();
-  width = size.width;
-
   // store scene reference
-  scene = generateScene(width, width);
+  scene = generateScene(WIDTH, WIDTH);
   data.element.appendChild(scene);
 
   renderScene();
@@ -112,7 +108,7 @@ function renderScene() {
     y: title_y,
     valign: "baseline",
   });
-  text_necesar.setAttribute("transform", `translate(0, -${getScaled(5)})`);
+  text_necesar.setAttribute("transform", `translate(0, -5)`);
   scene.appendChild(text_necesar);
 
   text_necesar_suma = drawText(formatNumber(total), {
@@ -122,7 +118,7 @@ function renderScene() {
     y: title_y,
     valign: "hanging",
   });
-  text_necesar_suma.setAttribute("transform", `translate(0, ${getScaled(5)})`);
+  text_necesar_suma.setAttribute("transform", `translate(0, 5)`);
   scene.appendChild(text_necesar_suma);
 }
 
@@ -131,7 +127,7 @@ function getProgressWidth() {
     return 0;
   }
 
-  return (suma * width) / total;
+  return (suma * WIDTH) / total;
 }
 
 function getTitleY() {
