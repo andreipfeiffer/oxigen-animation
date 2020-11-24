@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
     "declaration": true,
-    "declarationDir": "./dist",
+    "declarationDir": "./docs",
     "module": "es6",
     "noImplicitAny": true,
     "allowSyntheticDefaultImports": true,
-    "outDir": "./dist",
+    "outDir": "./docs",
     "target": "es2015"
   },
   "include": ["src/**/*"],

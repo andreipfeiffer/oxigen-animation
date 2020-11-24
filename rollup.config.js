@@ -5,7 +5,7 @@ import pkg from "./package.json";
 export default {
   input: "src/index.ts",
   output: {
-    file: "dist/index.js",
+    file: "docs/index.js",
     format: "iife",
     globals: {
       animejs: "anime",
