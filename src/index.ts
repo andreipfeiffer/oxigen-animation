@@ -12,6 +12,9 @@ import {
 } from "./utils";
 
 let scene: SVGSVGElement = null;
+let total = 0;
+let suma = 0;
+let donatori = 0;
 
 function animate() {
   const path = generatePath();
@@ -41,19 +44,21 @@ export function init(data: Init) {
     scene.parentNode.removeChild(scene);
   }
 
-  const { element, total_necesar, total_strans, donatori } = data;
-  const progress_amount = (total_strans * 100) / total_necesar;
+  total = data.total_necesar;
+  suma = data.total_strans;
+  donatori = data.donatori;
+
+  const progress_amount = suma > 0 ? (total * 100) / suma : 0;
   console.log({ progress_amount });
 
-  console.log("init()", { element, total_necesar, total_strans, donatori });
-
-  const size = element.getBoundingClientRect();
-  // const progress_radius = progress_amount / 2;
-  const progress_radius = 50;
+  const size = data.element.getBoundingClientRect();
+  const progress_radius = progress_amount / 2;
+  // const progress_radius = 50;
   console.log({ progress_radius });
 
+  // store scene reference
   scene = generateScene(size.width, size.width);
-  element.appendChild(scene);
+  data.element.appendChild(scene);
 
   const { x, y } = getCenter();
 
@@ -80,7 +85,7 @@ export function init(data: Init) {
   });
   scene.appendChild(title1);
 
-  const title2 = drawText(formatNumber(total_necesar), {
+  const title2 = drawText(formatNumber(total), {
     fill: Color.white,
     size: 37,
     x,
