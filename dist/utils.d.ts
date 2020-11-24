@@ -18,7 +18,15 @@ export declare function drawCircle(attrs: {
     r: number;
     fill: Color;
 }): SVGCircleElement;
-export declare function drawText(cx: number, cy: number, r: number, color: Color): SVGTextElement;
+export declare function drawText(value: string, attrs: {
+    x: number;
+    y: number;
+    size: number;
+    fill: Color;
+    valign?: "hanging" | "middle" | "baseline";
+}): SVGTextElement;
+export declare function formatNumber(value: number): string;
+export declare function getScaled(val: number): number;
 declare type Point = {
     x: number;
     y: number;

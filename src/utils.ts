@@ -110,6 +110,44 @@ export function drawCircle(attrs: {
   return circle;
 }
 
+export function drawText(
+  value: string,
+  attrs: {
+    x: number;
+    y: number;
+    size: number;
+    fill: Color;
+    valign?: "hanging" | "middle" | "baseline";
+  }
+) {
+  const { fill, x, y, size, valign = "middle" } = attrs;
+  const ratio = getRatio();
+
+  const text = document.createElementNS(svgNS, "text");
+  text.setAttributeNS(null, "text-anchor", "middle");
+  text.setAttributeNS(null, "alignment-baseline", valign);
+  text.setAttributeNS(null, "font-size", `${size * ratio}`);
+  text.setAttributeNS(null, "font-family", `Montserrat`);
+  text.setAttributeNS(null, "fill", fill);
+  text.setAttributeNS(null, "x", `${x}`);
+  text.setAttributeNS(null, "y", `${y}`);
+  text.textContent = value;
+
+  return text;
+}
+
+export function formatNumber(value: number) {
+  return Intl.NumberFormat("ro", {}).format(value);
+}
+
+function getRatio() {
+  return SCENE.w / 650;
+}
+
+export function getScaled(val: number) {
+  return val * getRatio();
+}
+
 type Point = {
   x: number;
   y: number;

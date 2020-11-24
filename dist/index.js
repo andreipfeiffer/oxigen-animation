@@ -80,6 +80,29 @@ var oxygen_animation = (function (exports, anime) {
       circle.setAttributeNS(null, "r", `${r}`);
       return circle;
   }
+  function drawText(value, attrs) {
+      const { fill, x, y, size, valign = "middle" } = attrs;
+      const ratio = getRatio();
+      const text = document.createElementNS(svgNS, "text");
+      text.setAttributeNS(null, "text-anchor", "middle");
+      text.setAttributeNS(null, "alignment-baseline", valign);
+      text.setAttributeNS(null, "font-size", `${size * ratio}`);
+      text.setAttributeNS(null, "font-family", `Montserrat`);
+      text.setAttributeNS(null, "fill", fill);
+      text.setAttributeNS(null, "x", `${x}`);
+      text.setAttributeNS(null, "y", `${y}`);
+      text.textContent = value;
+      return text;
+  }
+  function formatNumber(value) {
+      return Intl.NumberFormat("ro", {}).format(value);
+  }
+  function getRatio() {
+      return SCENE.w / 650;
+  }
+  function getScaled(val) {
+      return val * getRatio();
+  }
 
   let scene = null;
   function animate() {
@@ -95,7 +118,7 @@ var oxygen_animation = (function (exports, anime) {
           rotate: p("angle"),
           easing: "easeInOutSine",
           duration: 1000,
-          complete: function (anim) {
+          complete: function ( /*anim*/) {
               scene.removeChild(name);
               scene.removeChild(path);
           },
@@ -103,15 +126,43 @@ var oxygen_animation = (function (exports, anime) {
   }
   function init(data) {
       const { element, total_necesar, total_strans, donatori } = data;
+      const progress_amount = (total_strans * 100) / total_necesar;
+      console.log({ progress_amount });
       console.log("init()", { element, total_necesar, total_strans, donatori });
-      const dimensions = element.getBoundingClientRect();
-      scene = generateScene(dimensions.width, dimensions.width);
+      const size = element.getBoundingClientRect();
+      // const progress_radius = progress_amount / 2;
+      const progress_radius = 50;
+      console.log({ progress_radius });
+      scene = generateScene(size.width, size.width);
       element.appendChild(scene);
       const { x, y } = getCenter();
       const target = drawCircle({ cx: x, cy: y, r: x, fill: "#FF0202" /* primary */ });
       scene.appendChild(target);
-      const progress = drawCircle({ cx: x, cy: y, r: x / 2, fill: "#ffffff" /* white */ });
+      const progress = drawCircle({
+          cx: x,
+          cy: y,
+          r: progress_radius,
+          fill: "#ffffff" /* white */,
+      });
       scene.appendChild(progress);
+      const title_y = (y - progress_radius) / 2;
+      console.log({ y, progress_radius, title_y });
+      const title1 = drawText("Necesar", {
+          fill: "#ffffff" /* white */,
+          size: 18,
+          x,
+          y: title_y - getScaled(5),
+          valign: "baseline",
+      });
+      scene.appendChild(title1);
+      const title2 = drawText(formatNumber(total_necesar), {
+          fill: "#ffffff" /* white */,
+          size: 37,
+          x,
+          y: title_y + getScaled(5),
+          valign: "hanging",
+      });
+      scene.appendChild(title2);
   }
   function updateProgress(data) {
       const { total_strans, donatori } = data;

@@ -4,7 +4,10 @@ import {
   generateScene,
   generatePath,
   drawCircle,
+  drawText,
   getCenter,
+  getScaled,
+  formatNumber,
   Color,
 } from "./utils";
 
@@ -26,7 +29,7 @@ function animate() {
     rotate: p("angle"),
     easing: "easeInOutSine",
     duration: 1000,
-    complete: function (anim) {
+    complete: function (/*anim*/) {
       scene.removeChild(name);
       scene.removeChild(path);
     },
@@ -35,12 +38,17 @@ function animate() {
 
 export function init(data: Init) {
   const { element, total_necesar, total_strans, donatori } = data;
+  const progress_amount = (total_strans * 100) / total_necesar;
+  console.log({ progress_amount });
 
   console.log("init()", { element, total_necesar, total_strans, donatori });
 
-  const dimensions = element.getBoundingClientRect();
+  const size = element.getBoundingClientRect();
+  // const progress_radius = progress_amount / 2;
+  const progress_radius = 50;
+  console.log({ progress_radius });
 
-  scene = generateScene(dimensions.width, dimensions.width);
+  scene = generateScene(size.width, size.width);
   element.appendChild(scene);
 
   const { x, y } = getCenter();
@@ -48,8 +56,34 @@ export function init(data: Init) {
   const target = drawCircle({ cx: x, cy: y, r: x, fill: Color.primary });
   scene.appendChild(target);
 
-  const progress = drawCircle({ cx: x, cy: y, r: x / 2, fill: Color.white });
+  const progress = drawCircle({
+    cx: x,
+    cy: y,
+    r: progress_radius,
+    fill: Color.white,
+  });
   scene.appendChild(progress);
+
+  const title_y = (y - progress_radius) / 2;
+  console.log({ y, progress_radius, title_y });
+
+  const title1 = drawText("Necesar", {
+    fill: Color.white,
+    size: 18,
+    x,
+    y: title_y - getScaled(5),
+    valign: "baseline",
+  });
+  scene.appendChild(title1);
+
+  const title2 = drawText(formatNumber(total_necesar), {
+    fill: Color.white,
+    size: 37,
+    x,
+    y: title_y + getScaled(5),
+    valign: "hanging",
+  });
+  scene.appendChild(title2);
 }
 
 export function updateProgress(data: Progres) {
