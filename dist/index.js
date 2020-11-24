@@ -28,14 +28,6 @@ var oxygen_animation = (function (exports, anime) {
       svg.setAttributeNS(null, "height", `${height}`);
       return svg;
   }
-  function drawTarget() {
-      const circle = document.createElementNS(svgNS, "circle");
-      circle.setAttributeNS(null, "fill", "red");
-      circle.setAttributeNS(null, "cx", `${getCenter().x}`);
-      circle.setAttributeNS(null, "cy", `${getCenter().y}`);
-      circle.setAttributeNS(null, "r", "2");
-      return circle;
-  }
   function getPathCoords(start) {
       const inflexion_count = 4;
       const amplitude = 30;
@@ -79,6 +71,14 @@ var oxygen_animation = (function (exports, anime) {
           y: center,
       };
   }
+  function drawCircle(cx, cy, r, color) {
+      const circle = document.createElementNS(svgNS, "circle");
+      circle.setAttributeNS(null, "fill", color);
+      circle.setAttributeNS(null, "cx", `${cx}`);
+      circle.setAttributeNS(null, "cy", `${cy}`);
+      circle.setAttributeNS(null, "r", `${r}`);
+      return circle;
+  }
 
   let scene = null;
   function animate() {
@@ -96,7 +96,7 @@ var oxygen_animation = (function (exports, anime) {
           duration: 1000,
           complete: function (anim) {
               scene.removeChild(name);
-              // scene.removeChild(path);
+              scene.removeChild(path);
           },
       });
   }
@@ -106,8 +106,11 @@ var oxygen_animation = (function (exports, anime) {
       const dimensions = element.getBoundingClientRect();
       scene = generateScene(dimensions.width, dimensions.width);
       element.appendChild(scene);
-      const target = drawTarget();
+      const { x, y } = getCenter();
+      const target = drawCircle(x, y, x, "#FF0202" /* primary */);
       scene.appendChild(target);
+      const progress = drawCircle(x, y, x / 2, "#ffffff" /* white */);
+      scene.appendChild(progress);
   }
   function updateProgress(data) {
       const { total_strans, donatori } = data;

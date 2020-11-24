@@ -6,6 +6,11 @@ const SCENE: Size = {
   h: 0,
 };
 
+export const enum Color {
+  primary = "#FF0202",
+  black = "#000000",
+  white = "#ffffff",
+}
 
 export function generateName() {
   const circle = document.createElementNS(svgNS, "circle");
@@ -25,15 +30,6 @@ export function generateScene(width: number, height: number) {
   svg.setAttributeNS(null, "width", `${width}`);
   svg.setAttributeNS(null, "height", `${height}`);
   return svg;
-}
-
-export function drawTarget() {
-  const circle = document.createElementNS(svgNS, "circle");
-  circle.setAttributeNS(null, "fill", "red");
-  circle.setAttributeNS(null, "cx", `${getCenter().x}`);
-  circle.setAttributeNS(null, "cy", `${getCenter().y}`);
-  circle.setAttributeNS(null, "r", "2");
-  return circle;
 }
 
 function getPathCoords(start: Point) {
@@ -88,12 +84,21 @@ export function getRandom(max: number, min: number = 0) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-function getCenter(): Point {
+export function getCenter(): Point {
   const center = Math.floor(SCENE.w / 2);
   return {
     x: center,
     y: center,
   };
+}
+
+export function drawCircle(cx: number, cy: number, r: number, color: Color) {
+  const circle = document.createElementNS(svgNS, "circle");
+  circle.setAttributeNS(null, "fill", color);
+  circle.setAttributeNS(null, "cx", `${cx}`);
+  circle.setAttributeNS(null, "cy", `${cy}`);
+  circle.setAttributeNS(null, "r", `${r}`);
+  return circle;
 }
 
 type Point = {

@@ -1,5 +1,12 @@
 import anime from "animejs";
-import { generateName, generateScene, drawTarget, generatePath } from "./utils";
+import {
+  generateName,
+  generateScene,
+  generatePath,
+  drawCircle,
+  getCenter,
+  Color,
+} from "./utils";
 
 let scene: SVGSVGElement = null;
 
@@ -21,9 +28,40 @@ function animate() {
     duration: 1000,
     complete: function (anim) {
       scene.removeChild(name);
-      // scene.removeChild(path);
+      scene.removeChild(path);
     },
   });
+}
+
+export function init(data: Init) {
+  const { element, total_necesar, total_strans, donatori } = data;
+
+  console.log("init()", { element, total_necesar, total_strans, donatori });
+
+  const dimensions = element.getBoundingClientRect();
+
+  scene = generateScene(dimensions.width, dimensions.width);
+  element.appendChild(scene);
+
+  const { x, y } = getCenter();
+
+  const target = drawCircle(x, y, x, Color.primary);
+  scene.appendChild(target);
+
+  const progress = drawCircle(x, y, x / 2, Color.white);
+  scene.appendChild(progress);
+}
+
+export function updateProgress(data: Progres) {
+  const { total_strans, donatori } = data;
+  console.log("setData()", { total_strans, donatori });
+}
+
+export function animateBubble(data: Donator = { nume: "", suma: 0 }) {
+  const { nume, suma } = data;
+  console.log("animateBubble()", { nume, suma });
+
+  animate();
 }
 
 type Init = {
@@ -40,28 +78,3 @@ type Donator = {
   nume: string;
   suma: number;
 };
-
-export function init(data: Init) {
-  const { element, total_necesar, total_strans, donatori } = data;
-
-  console.log("init()", { element, total_necesar, total_strans, donatori });
-
-  const dimensions = element.getBoundingClientRect();
-
-  scene = generateScene(dimensions.width, dimensions.width);
-  element.appendChild(scene);
-  const target = drawTarget();
-  scene.appendChild(target);
-}
-
-export function updateProgress(data: Progres) {
-  const { total_strans, donatori } = data;
-  console.log("setData()", { total_strans, donatori });
-}
-
-export function animateBubble(data: Donator = { nume: "", suma: 0 }) {
-  const { nume, suma } = data;
-  console.log("animateBubble()", { nume, suma });
-
-  animate();
-}
