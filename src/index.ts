@@ -37,6 +37,10 @@ function animate() {
 }
 
 export function init(data: Init) {
+  if (scene) {
+    scene.parentNode.removeChild(scene);
+  }
+
   const { element, total_necesar, total_strans, donatori } = data;
   const progress_amount = (total_strans * 100) / total_necesar;
   console.log({ progress_amount });
