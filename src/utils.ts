@@ -26,7 +26,7 @@ export function generateScene(width: number, height: number) {
   SCENE.h = height;
 
   const svg = document.createElementNS(svgNS, "svg");
-  svg.style.border = "1px black solid";
+  svg.style.display = "block";
   svg.setAttributeNS(null, "width", `${width}`);
   svg.setAttributeNS(null, "height", `${height}`);
   return svg;
