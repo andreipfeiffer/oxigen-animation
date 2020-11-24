@@ -2,15 +2,12 @@
   "name": "oxigen-animation",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/index.js",
-  "module": "dist/index.es.js",
+  "main": "docs/index.js",
+  "module": "docs/index.es.js",
   "files": [
-    "dist"
+    "docs"
   ],
-  "types": "dist/index.d.ts",
-  "directories": {
-    "example": "example"
-  },
+  "types": "docs/index.d.ts",
   "scripts": {
     "build": "rollup -c",
     "watch": "rollup -cw"

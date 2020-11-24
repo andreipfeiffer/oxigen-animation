@@ -42,7 +42,7 @@ Install it from Github:
 npm install git+https://github.com/andreipfeiffer/oxigen-animation.git
 ```
 
-or simply [download](https://raw.githubusercontent.com/andreipfeiffer/oxigen-animation/main/dist/oxygen-animation.js) it.
+or simply [download](https://raw.githubusercontent.com/andreipfeiffer/oxigen-animation/main/docs/index.js) it.
 
 ## Usage
 
