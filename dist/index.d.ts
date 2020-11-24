@@ -1,0 +1,16 @@
+declare type Init = {
+    element: HTMLElement;
+    total_necesar: number;
+} & Progres;
+declare type Progres = {
+    total_strans: number;
+    donatori: number;
+};
+declare type Donator = {
+    nume: string;
+    suma: number;
+};
+export declare function init(data: Init): void;
+export declare function setData(data: Progres): void;
+export declare function animateBubble(data?: Donator): void;
+export {};

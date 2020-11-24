@@ -1,18 +1,40 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Oxigen Animation usage example</title>
-    <meta charset="UTF-8" />
-  </head>
 
-  <body>
-    <div id="app">
-      <button id="generate_path">Generate path</button>
+<head>
+  <title>Oxigen Animation usage example</title>
+  <meta charset="UTF-8" />
+</head>
+
+<body>
+  <div id="app">
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr;">
+      <div>
+        <form id="animate-form">
+          <label>Nume:
+            <input type="text" name="nume" value="Andrei" />
+          </label>
+
+          <br />
+
+          <label>Suma:
+            <input type="number" name="suma" value="200" />
+          </label>
+
+          <br />
+
+          <button type="submit">Animate</button>
+        </form>
+
+      </div>
       <div id="animation-stage"></div>
     </div>
+  </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
-    <script src="../dist/oxygen-animation.js"></script>
-    <script src="script.js"></script>
-  </body>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  <script src="../dist/index.js"></script>
+  <script src="script.js"></script>
+</body>
+
 </html>

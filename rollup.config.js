@@ -5,11 +5,12 @@ import pkg from "./package.json";
 export default {
   input: "src/index.ts",
   output: {
-    file: "dist/oxygen-animation.js",
+    file: "dist/index.js",
     format: "iife",
     globals: {
       animejs: "anime",
     },
+    name: "oxygen_animation",
   },
   external: [
     ...Object.keys(pkg.dependencies || {}),

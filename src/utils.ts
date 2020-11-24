@@ -1,14 +1,11 @@
 const svgNS = "http://www.w3.org/2000/svg";
 
-export const SCENE_COORDS: Point = {
-  x: window.innerWidth - 20,
-  y: Math.floor(window.innerHeight / 2),
+// these are initialized in generateScene()
+const SCENE: Size = {
+  w: 0,
+  h: 0,
 };
 
-const TARGET_COORDS: Point = {
-  x: Math.floor(SCENE_COORDS.x / 2),
-  y: 50,
-};
 
 export function generateName() {
   const circle = document.createElementNS(svgNS, "circle");
@@ -19,19 +16,22 @@ export function generateName() {
   return circle;
 }
 
-export function generateScene(coords: Point = SCENE_COORDS) {
+export function generateScene(width: number, height: number) {
+  SCENE.w = width;
+  SCENE.h = height;
+
   const svg = document.createElementNS(svgNS, "svg");
   svg.style.border = "1px black solid";
-  svg.setAttributeNS(null, "width", `${coords.x}`);
-  svg.setAttributeNS(null, "height", `${coords.y}`);
+  svg.setAttributeNS(null, "width", `${width}`);
+  svg.setAttributeNS(null, "height", `${height}`);
   return svg;
 }
 
-export function drawTarget(coords: Point = SCENE_COORDS) {
+export function drawTarget() {
   const circle = document.createElementNS(svgNS, "circle");
   circle.setAttributeNS(null, "fill", "red");
-  circle.setAttributeNS(null, "cx", `${TARGET_COORDS.x}`);
-  circle.setAttributeNS(null, "cy", `${TARGET_COORDS.y}`);
+  circle.setAttributeNS(null, "cx", `${getCenter().x}`);
+  circle.setAttributeNS(null, "cy", `${getCenter().y}`);
   circle.setAttributeNS(null, "r", "2");
   return circle;
 }
@@ -39,8 +39,8 @@ export function drawTarget(coords: Point = SCENE_COORDS) {
 function getPathCoords(start: Point) {
   const inflexion_count = 4;
   const amplitude = 30;
-  const step_x = (TARGET_COORDS.x - start.x) / inflexion_count;
-  const step_y = (TARGET_COORDS.y - start.y) / inflexion_count;
+  const step_x = (getCenter().x - start.x) / inflexion_count;
+  const step_y = (getCenter().y - start.y) / inflexion_count;
 
   const inflexion_points: Point[] = Array(inflexion_count - 1)
     .fill(0)
@@ -54,10 +54,22 @@ function getPathCoords(start: Point) {
     y: start.y + step_y / 2,
   };
 
-  console.log({ inflexion_points });
+  // console.log({ inflexion_points });
 
-  return `M ${start.x} ${start.y} Q ${control_point.x} ${control_point.y}, ${inflexion_points[0].x} ${inflexion_points[0].y} T ${inflexion_points[1].x} ${inflexion_points[1].y} T ${inflexion_points[2].x} ${inflexion_points[2].y} T ${TARGET_COORDS.x} ${TARGET_COORDS.y}`;
-  // return `M ${start.x} ${start.y} Q 52.5 100, 95 60 T ${TARGET_COORDS.x} ${TARGET_COORDS.y}`;
+  return `M ${start.x} ${start.y} Q ${control_point.x} ${control_point.y}, ${
+    inflexion_points[0].x
+  } ${inflexion_points[0].y} T ${inflexion_points[1].x} ${
+    inflexion_points[1].y
+  } T ${inflexion_points[2].x} ${inflexion_points[2].y} T ${getCenter().x} ${
+    getCenter().y
+  }`;
+  // return `M ${start.x} ${start.y} Q 52.5 100, 95 60 T ${getCenter().x} ${getCenter().y}`;
+}
+
+export function generatePath() {
+  const x = getRandom(SCENE.w);
+  const y = SCENE.h;
+  return createPath({ x, y });
 }
 
 export function createPath(start: Point) {
@@ -76,7 +88,20 @@ export function getRandom(max: number, min: number = 0) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
+function getCenter(): Point {
+  const center = Math.floor(SCENE.w / 2);
+  return {
+    x: center,
+    y: center,
+  };
+}
+
 type Point = {
   x: number;
   y: number;
+};
+
+type Size = {
+  w: number;
+  h: number;
 };
