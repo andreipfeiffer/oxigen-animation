@@ -92,9 +92,18 @@ export function getCenter(): Point {
   };
 }
 
-export function drawCircle(cx: number, cy: number, r: number, color: Color) {
+export function drawCircle(attrs: {
+  /** center X */
+  cx: number;
+  /** center Y */
+  cy: number;
+  /** radius */
+  r: number;
+  fill: Color;
+}) {
+  const { fill, cx, cy, r } = attrs;
   const circle = document.createElementNS(svgNS, "circle");
-  circle.setAttributeNS(null, "fill", color);
+  circle.setAttributeNS(null, "fill", fill);
   circle.setAttributeNS(null, "cx", `${cx}`);
   circle.setAttributeNS(null, "cy", `${cy}`);
   circle.setAttributeNS(null, "r", `${r}`);

@@ -9,7 +9,16 @@ export declare function generatePath(): SVGSVGElement;
 export declare function createPath(start: Point): SVGSVGElement;
 export declare function getRandom(max: number, min?: number): number;
 export declare function getCenter(): Point;
-export declare function drawCircle(cx: number, cy: number, r: number, color: Color): SVGCircleElement;
+export declare function drawCircle(attrs: {
+    /** center X */
+    cx: number;
+    /** center Y */
+    cy: number;
+    /** radius */
+    r: number;
+    fill: Color;
+}): SVGCircleElement;
+export declare function drawText(cx: number, cy: number, r: number, color: Color): SVGTextElement;
 declare type Point = {
     x: number;
     y: number;

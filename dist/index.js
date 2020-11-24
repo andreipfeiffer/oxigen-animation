@@ -71,9 +71,10 @@ var oxygen_animation = (function (exports, anime) {
           y: center,
       };
   }
-  function drawCircle(cx, cy, r, color) {
+  function drawCircle(attrs) {
+      const { fill, cx, cy, r } = attrs;
       const circle = document.createElementNS(svgNS, "circle");
-      circle.setAttributeNS(null, "fill", color);
+      circle.setAttributeNS(null, "fill", fill);
       circle.setAttributeNS(null, "cx", `${cx}`);
       circle.setAttributeNS(null, "cy", `${cy}`);
       circle.setAttributeNS(null, "r", `${r}`);
@@ -107,9 +108,9 @@ var oxygen_animation = (function (exports, anime) {
       scene = generateScene(dimensions.width, dimensions.width);
       element.appendChild(scene);
       const { x, y } = getCenter();
-      const target = drawCircle(x, y, x, "#FF0202" /* primary */);
+      const target = drawCircle({ cx: x, cy: y, r: x, fill: "#FF0202" /* primary */ });
       scene.appendChild(target);
-      const progress = drawCircle(x, y, x / 2, "#ffffff" /* white */);
+      const progress = drawCircle({ cx: x, cy: y, r: x / 2, fill: "#ffffff" /* white */ });
       scene.appendChild(progress);
   }
   function updateProgress(data) {

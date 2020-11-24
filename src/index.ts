@@ -45,10 +45,10 @@ export function init(data: Init) {
 
   const { x, y } = getCenter();
 
-  const target = drawCircle(x, y, x, Color.primary);
+  const target = drawCircle({ cx: x, cy: y, r: x, fill: Color.primary });
   scene.appendChild(target);
 
-  const progress = drawCircle(x, y, x / 2, Color.white);
+  const progress = drawCircle({ cx: x, cy: y, r: x / 2, fill: Color.white });
   scene.appendChild(progress);
 }
 
