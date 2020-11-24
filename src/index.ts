@@ -12,11 +12,23 @@ import {
 } from "./utils";
 
 let scene: SVGSVGElement = null;
+
+let total_circle: SVGCircleElement = null;
+let text_necesar: SVGTextElement = null;
+let text_necesar_suma: SVGTextElement = null;
+
+let progress_circle: SVGCircleElement = null;
+
+let width = 0;
 let total = 0;
 let suma = 0;
 let donatori = 0;
 
 function animate() {
+  if (!scene) {
+    throw new Error("Not initialized! Call .init() first");
+  }
+
   const path = generatePath();
   scene.appendChild(path);
 
@@ -45,59 +57,31 @@ export function init(data: Init) {
   }
 
   total = data.total_necesar;
-  suma = data.total_strans;
-  donatori = data.donatori;
-
-  const progress_amount = suma > 0 ? (total * 100) / suma : 0;
-  console.log({ progress_amount });
 
   const size = data.element.getBoundingClientRect();
-  const progress_radius = progress_amount / 2;
-  // const progress_radius = 50;
-  console.log({ progress_radius });
+  width = size.width;
 
   // store scene reference
-  scene = generateScene(size.width, size.width);
+  scene = generateScene(width, width);
   data.element.appendChild(scene);
 
-  const { x, y } = getCenter();
-
-  const target = drawCircle({ cx: x, cy: y, r: x, fill: Color.primary });
-  scene.appendChild(target);
-
-  const progress = drawCircle({
-    cx: x,
-    cy: y,
-    r: progress_radius,
-    fill: Color.white,
-  });
-  scene.appendChild(progress);
-
-  const title_y = (y - progress_radius) / 2;
-  console.log({ y, progress_radius, title_y });
-
-  const title1 = drawText("Necesar", {
-    fill: Color.white,
-    size: 18,
-    x,
-    y: title_y - getScaled(5),
-    valign: "baseline",
-  });
-  scene.appendChild(title1);
-
-  const title2 = drawText(formatNumber(total), {
-    fill: Color.white,
-    size: 37,
-    x,
-    y: title_y + getScaled(5),
-    valign: "hanging",
-  });
-  scene.appendChild(title2);
+  renderScene();
 }
 
 export function updateProgress(data: Progres) {
-  const { total_strans, donatori } = data;
-  console.log("setData()", { total_strans, donatori });
+  if (!scene) {
+    throw new Error("Not initialized! Call .init() first");
+  }
+
+  suma = data.total_strans;
+  donatori = data.donatori;
+
+  const progress_size = getProgressWidth();
+  progress_circle.setAttribute("r", `${progress_size / 2}`);
+
+  const title_y = getTitleY();
+  text_necesar.setAttribute("y", `${title_y}`);
+  text_necesar_suma.setAttribute("y", `${title_y}`);
 }
 
 export function animateBubble(data: Donator = { nume: "", suma: 0 }) {
@@ -107,10 +91,63 @@ export function animateBubble(data: Donator = { nume: "", suma: 0 }) {
   animate();
 }
 
+function renderScene() {
+  const { x, y } = getCenter();
+  const progress_width = getProgressWidth();
+
+  total_circle = drawCircle({ cx: x, cy: y, r: x, fill: Color.primary });
+  scene.appendChild(total_circle);
+
+  progress_circle = drawCircle({
+    cx: x,
+    cy: y,
+    r: progress_width / 2,
+    fill: Color.white,
+  });
+  scene.appendChild(progress_circle);
+
+  const title_y = getTitleY();
+  // console.log({ y, progress_radius, title_y });
+
+  text_necesar = drawText("Necesar", {
+    fill: Color.white,
+    size: 18,
+    x,
+    y: title_y,
+    valign: "baseline",
+  });
+  text_necesar.setAttribute("transform", `translate(0, -${getScaled(5)})`);
+  scene.appendChild(text_necesar);
+
+  text_necesar_suma = drawText(formatNumber(total), {
+    fill: Color.white,
+    size: 37,
+    x,
+    y: title_y,
+    valign: "hanging",
+  });
+  text_necesar_suma.setAttribute("transform", `translate(0, ${getScaled(5)})`);
+  scene.appendChild(text_necesar_suma);
+}
+
+function getProgressWidth() {
+  if (suma === 0) {
+    return 0;
+  }
+
+  return (suma * width) / total;
+}
+
+function getTitleY() {
+  const { y } = getCenter();
+  // middle between the 2 circles
+  return (y - getProgressWidth() / 2) / 2;
+}
+
 type Init = {
   element: HTMLElement;
   total_necesar: number;
-} & Progres;
+};
 
 type Progres = {
   total_strans: number;

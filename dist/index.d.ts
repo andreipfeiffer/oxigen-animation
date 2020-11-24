@@ -4,7 +4,7 @@ export declare function animateBubble(data?: Donator): void;
 declare type Init = {
     element: HTMLElement;
     total_necesar: number;
-} & Progres;
+};
 declare type Progres = {
     total_strans: number;
     donatori: number;

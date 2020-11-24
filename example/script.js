@@ -13,6 +13,16 @@ function init() {
   });
 }
 
+function update() {
+  const suma = +update_form.querySelector('input[name="suma"]').value;
+  const donatori = +update_form.querySelector('input[name="donatori"]').value;
+
+  oxygen_animation.updateProgress({
+    donatori,
+    total_strans: suma,
+  });
+}
+
 function animate() {
   const nume = animate_form.querySelector('input[name="nume"]').value;
   const suma = +animate_form.querySelector('input[name="suma"]').value;
@@ -22,6 +32,7 @@ function animate() {
 
 const init_form = document.querySelector("#init-form");
 
+window.addEventListener("resize", init);
 init_form.addEventListener(
   "submit",
   (event) => {
@@ -31,7 +42,16 @@ init_form.addEventListener(
   false
 );
 
-window.addEventListener("resize", init);
+const update_form = document.querySelector("#update-form");
+
+update_form.addEventListener(
+  "submit",
+  (event) => {
+    event.preventDefault();
+    update();
+  },
+  false
+);
 
 const animate_form = document.querySelector("#animate-form");
 
