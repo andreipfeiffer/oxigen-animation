@@ -1,3 +1,5 @@
+import { Donator } from "./types";
+
 const svgNS = "http://www.w3.org/2000/svg";
 
 // these are initialized in generateScene()
@@ -12,13 +14,45 @@ export const enum Color {
   white = "#ffffff",
 }
 
-export function generateName() {
-  const circle = document.createElementNS(svgNS, "circle");
-  circle.setAttributeNS(null, "fill", "blue");
-  circle.setAttributeNS(null, "cx", "0");
-  circle.setAttributeNS(null, "cy", "0");
-  circle.setAttributeNS(null, "r", "10");
-  return circle;
+export function generateName(data: Donator) {
+  const group = document.createElementNS(svgNS, "g");
+  const text_group = document.createElementNS(svgNS, "g");
+  text_group.setAttributeNS(null, "class", "texts");
+  text_group.setAttributeNS(null, "opacity", "0");
+
+  const SIZE = 50;
+
+  const circle = drawCircle({ cx: 0, cy: 0, r: SIZE, fill: Color.white });
+  circle.setAttributeNS(null, "stroke", Color.primary);
+  circle.setAttributeNS(null, "stroke-width", "6");
+
+  const nume = drawText(data.nume, {
+    fill: Color.black,
+    size: 11,
+    x: 0,
+    y: 0,
+    valign: "baseline",
+  });
+  nume.setAttributeNS(null, "transform", `translate(0, -5)`);
+  nume.setAttributeNS(null, "opacity", "0.5");
+
+  const suma = drawText(formatNumber(data.suma), {
+    fill: Color.black,
+    size: 16,
+    x: 0,
+    y: 0,
+    valign: "hanging",
+  });
+  suma.setAttributeNS(null, "transform", `translate(0, 5)`);
+
+  // texts are placed inside another group, to animate them easier
+  text_group.appendChild(nume);
+  text_group.appendChild(suma);
+
+  group.appendChild(circle);
+  group.appendChild(text_group);
+
+  return group;
 }
 
 export function generateScene(width: number, height: number) {
@@ -72,13 +106,10 @@ export function generatePath() {
 export function createPath(start: Point) {
   const path = document.createElementNS(svgNS, "path");
   path.setAttributeNS(null, "fill", "none");
-  path.setAttributeNS(null, "stroke", "black");
+  path.setAttributeNS(null, "stroke", "none");
   path.setAttributeNS(null, "d", getPathCoords(start));
 
-  const svg = document.createElementNS(svgNS, "svg");
-  svg.appendChild(path);
-
-  return svg;
+  return path;
 }
 
 export function getRandom(max: number, min: number = 0) {
@@ -91,6 +122,10 @@ export function getCenter(): Point {
     x: center,
     y: center,
   };
+}
+
+export function createGroup() {
+  return document.createElementNS(svgNS, "g");
 }
 
 export function drawCircle(attrs: {

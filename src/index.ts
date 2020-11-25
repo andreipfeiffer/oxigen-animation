@@ -1,16 +1,19 @@
 import anime from "animejs";
+import { Init, Progres, Donator } from "./types";
 import {
   generateName,
   generateScene,
   generatePath,
   drawCircle,
   drawText,
+  createGroup,
   getCenter,
   formatNumber,
   Color,
 } from "./utils";
 
 let scene: SVGSVGElement = null;
+let bubbles_container: SVGGElement = null;
 
 let total_circle: SVGCircleElement = null;
 let text_necesar: SVGTextElement = null;
@@ -37,7 +40,7 @@ export function init(data: Init) {
   total = data.total_necesar;
 
   // store scene reference
-  scene = generateScene(WIDTH, WIDTH);
+  scene = generateScene(WIDTH, WIDTH + 200);
   data.element.appendChild(scene);
 
   renderScene();
@@ -52,53 +55,102 @@ export function update(data: Progres) {
   donatori = data.donatori;
 
   const progress_size = getProgressWidth();
-  progress_circle.setAttribute("r", `${progress_size / 2}`);
+  progress_circle.setAttributeNS(null, "r", `${progress_size / 2}`);
 
   const title_y = getTitleY();
-  text_necesar.setAttribute("y", `${title_y}`);
-  text_necesar_val.setAttribute("y", `${title_y}`);
+  text_necesar.setAttributeNS(null, "y", `${title_y}`);
+  text_necesar_val.setAttributeNS(null, "y", `${title_y}`);
 
   const { y } = getCenter();
   const inner_offset = getInnerTextOffset();
-  text_strans.setAttribute("y", `${y - inner_offset}`);
-  text_strans_val.setAttribute("y", `${y - inner_offset}`);
+  text_strans.setAttributeNS(null, "y", `${y - inner_offset}`);
+  text_strans_val.setAttributeNS(null, "y", `${y - inner_offset}`);
   text_strans_val.textContent = formatNumber(suma);
 
-  text_donatori.setAttribute("y", `${y + inner_offset}`);
-  text_donatori_val.setAttribute("y", `${y + inner_offset}`);
+  text_donatori.setAttributeNS(null, "y", `${y + inner_offset}`);
+  text_donatori_val.setAttributeNS(null, "y", `${y + inner_offset}`);
   text_donatori_val.textContent = String(donatori);
 
   // renderScene();
 }
 
-export function animate(data: Donator = { nume: "", suma: 0 }) {
-  const { nume, suma } = data;
-  console.log("animate()", { nume, suma });
-
+export async function animate(data: Donator = { nume: "", suma: 0 }) {
   if (!scene) {
     throw new Error("Not initialized! Call .init() first");
   }
 
+  // @todo randomize this
+  const total_duration = 6000;
+  // outside
+  const small_duration = 500;
+
   const path = generatePath();
-  scene.appendChild(path);
+  bubbles_container.appendChild(path);
 
-  const name = generateName();
-  scene.appendChild(name);
+  const name = generateName(data);
+  bubbles_container.appendChild(name);
 
-  var p = anime.path(path.querySelector("path"));
+  var p = anime.path(path);
 
-  anime({
+  const path_motion = anime({
     targets: name,
     translateX: p("x"),
     translateY: p("y"),
-    rotate: p("angle"),
     easing: "easeInOutSine",
-    duration: 1000,
-    complete: function (/*anim*/) {
-      scene.removeChild(name);
-      scene.removeChild(path);
+    duration: total_duration,
+    complete: function () {
+      bubbles_container.removeChild(path);
     },
   });
+
+  const transition_in = anime({
+    targets: name.querySelector("circle"),
+    opacity: [0, 1],
+    r: [0, 20],
+    easing: "easeOutBounce",
+    duration: 500,
+    delay: 400,
+  });
+
+  await transition_in.finished;
+
+  const grow_in = anime({
+    targets: name.querySelector("circle"),
+    r: 40,
+    easing: "easeOutBounce",
+    duration: 1000,
+    delay: small_duration,
+  });
+  anime({
+    targets: name.querySelector(".texts"),
+    opacity: 1,
+    scale: [0, 1],
+    easing: "easeOutBounce",
+    duration: 500,
+    delay: small_duration,
+  });
+
+  await grow_in.finished;
+
+  anime({
+    targets: name.querySelector("circle"),
+    strokeWidth: 0,
+    duration: 1000,
+    easing: "linear",
+  });
+
+  anime({
+    targets: [name.querySelector("circle"), name.querySelector(".texts")],
+    scale: 0,
+    opacity: 0,
+    duration: 1000,
+    easing: "linear",
+    delay: 2000,
+  });
+
+  await path_motion.finished;
+
+  // @todo do something with the inner circle, ie: small pulse
 }
 
 function renderScene() {
@@ -107,6 +159,9 @@ function renderScene() {
 
   total_circle = drawCircle({ cx: x, cy: y, r: x, fill: Color.primary });
   scene.appendChild(total_circle);
+
+  bubbles_container = createGroup();
+  scene.appendChild(bubbles_container);
 
   progress_circle = drawCircle({
     cx: x,
@@ -117,7 +172,6 @@ function renderScene() {
   scene.appendChild(progress_circle);
 
   const title_y = getTitleY();
-  // console.log({ y, progress_radius, title_y });
 
   text_necesar = drawText("Necesar", {
     fill: Color.white,
@@ -126,7 +180,7 @@ function renderScene() {
     y: title_y,
     valign: "baseline",
   });
-  text_necesar.setAttribute("transform", `translate(0, -5)`);
+  text_necesar.setAttributeNS(null, "transform", `translate(0, -5)`);
   scene.appendChild(text_necesar);
 
   text_necesar_val = drawText(formatNumber(total), {
@@ -136,7 +190,7 @@ function renderScene() {
     y: title_y,
     valign: "hanging",
   });
-  text_necesar_val.setAttribute("transform", `translate(0, 5)`);
+  text_necesar_val.setAttributeNS(null, "transform", `translate(0, 5)`);
   scene.appendChild(text_necesar_val);
 
   const inner_text_offset = getInnerTextOffset();
@@ -148,7 +202,7 @@ function renderScene() {
     y: y - inner_text_offset,
     valign: "baseline",
   });
-  text_strans.setAttribute("transform", `translate(0, -5)`);
+  text_strans.setAttributeNS(null, "transform", `translate(0, -5)`);
   scene.appendChild(text_strans);
 
   text_strans_val = drawText(formatNumber(suma), {
@@ -158,7 +212,7 @@ function renderScene() {
     y: y - inner_text_offset,
     valign: "hanging",
   });
-  text_strans_val.setAttribute("transform", `translate(0, 5)`);
+  text_strans_val.setAttributeNS(null, "transform", `translate(0, 5)`);
   scene.appendChild(text_strans_val);
 
   text_donatori = drawText("Donatori", {
@@ -168,7 +222,7 @@ function renderScene() {
     y: y + inner_text_offset,
     valign: "baseline",
   });
-  text_donatori.setAttribute("transform", `translate(0, -5)`);
+  text_donatori.setAttributeNS(null, "transform", `translate(0, -5)`);
   scene.appendChild(text_donatori);
 
   text_donatori_val = drawText(String(donatori), {
@@ -178,7 +232,7 @@ function renderScene() {
     y: y + inner_text_offset,
     valign: "hanging",
   });
-  text_donatori_val.setAttribute("transform", `translate(0, 5)`);
+  text_donatori_val.setAttributeNS(null, "transform", `translate(0, 5)`);
   scene.appendChild(text_donatori_val);
 }
 
@@ -200,18 +254,3 @@ function getInnerTextOffset() {
   // at half of the inner radius
   return getProgressWidth() / 4 - 10;
 }
-
-type Init = {
-  element: HTMLElement;
-  total_necesar: number;
-};
-
-type Progres = {
-  total_strans: number;
-  donatori: number;
-};
-
-type Donator = {
-  nume: string;
-  suma: number;
-};
