@@ -14,7 +14,13 @@ let scene: SVGSVGElement = null;
 
 let total_circle: SVGCircleElement = null;
 let text_necesar: SVGTextElement = null;
-let text_necesar_suma: SVGTextElement = null;
+let text_necesar_val: SVGTextElement = null;
+
+let text_strans: SVGTextElement = null;
+let text_strans_val: SVGTextElement = null;
+
+let text_donatori: SVGTextElement = null;
+let text_donatori_val: SVGTextElement = null;
 
 let progress_circle: SVGCircleElement = null;
 
@@ -50,7 +56,19 @@ export function update(data: Progres) {
 
   const title_y = getTitleY();
   text_necesar.setAttribute("y", `${title_y}`);
-  text_necesar_suma.setAttribute("y", `${title_y}`);
+  text_necesar_val.setAttribute("y", `${title_y}`);
+
+  const { y } = getCenter();
+  const inner_offset = getInnerTextOffset();
+  text_strans.setAttribute("y", `${y - inner_offset}`);
+  text_strans_val.setAttribute("y", `${y - inner_offset}`);
+  text_strans_val.textContent = formatNumber(suma);
+
+  text_donatori.setAttribute("y", `${y + inner_offset}`);
+  text_donatori_val.setAttribute("y", `${y + inner_offset}`);
+  text_donatori_val.textContent = String(donatori);
+
+  // renderScene();
 }
 
 export function animate(data: Donator = { nume: "", suma: 0 }) {
@@ -111,15 +129,57 @@ function renderScene() {
   text_necesar.setAttribute("transform", `translate(0, -5)`);
   scene.appendChild(text_necesar);
 
-  text_necesar_suma = drawText(formatNumber(total), {
+  text_necesar_val = drawText(formatNumber(total), {
     fill: Color.white,
     size: 37,
     x,
     y: title_y,
     valign: "hanging",
   });
-  text_necesar_suma.setAttribute("transform", `translate(0, 5)`);
-  scene.appendChild(text_necesar_suma);
+  text_necesar_val.setAttribute("transform", `translate(0, 5)`);
+  scene.appendChild(text_necesar_val);
+
+  const inner_text_offset = getInnerTextOffset();
+
+  text_strans = drawText("Suma stransa", {
+    fill: Color.black,
+    size: 18,
+    x,
+    y: y - inner_text_offset,
+    valign: "baseline",
+  });
+  text_strans.setAttribute("transform", `translate(0, -5)`);
+  scene.appendChild(text_strans);
+
+  text_strans_val = drawText(formatNumber(suma), {
+    fill: Color.black,
+    size: 38,
+    x,
+    y: y - inner_text_offset,
+    valign: "hanging",
+  });
+  text_strans_val.setAttribute("transform", `translate(0, 5)`);
+  scene.appendChild(text_strans_val);
+
+  text_donatori = drawText("Donatori", {
+    fill: Color.black,
+    size: 18,
+    x,
+    y: y + inner_text_offset,
+    valign: "baseline",
+  });
+  text_donatori.setAttribute("transform", `translate(0, -5)`);
+  scene.appendChild(text_donatori);
+
+  text_donatori_val = drawText(String(donatori), {
+    fill: Color.black,
+    size: 40,
+    x,
+    y: y + inner_text_offset,
+    valign: "hanging",
+  });
+  text_donatori_val.setAttribute("transform", `translate(0, 5)`);
+  scene.appendChild(text_donatori_val);
 }
 
 function getProgressWidth() {
@@ -134,6 +194,11 @@ function getTitleY() {
   const { y } = getCenter();
   // middle between the 2 circles
   return (y - getProgressWidth() / 2) / 2;
+}
+
+function getInnerTextOffset() {
+  // at half of the inner radius
+  return getProgressWidth() / 4 - 10;
 }
 
 type Init = {

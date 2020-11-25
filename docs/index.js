@@ -101,7 +101,11 @@ var oxygen_animation = (function (exports, anime) {
   let scene = null;
   let total_circle = null;
   let text_necesar = null;
-  let text_necesar_suma = null;
+  let text_necesar_val = null;
+  let text_strans = null;
+  let text_strans_val = null;
+  let text_donatori = null;
+  let text_donatori_val = null;
   let progress_circle = null;
   const WIDTH = 650;
   let total = 0;
@@ -127,7 +131,16 @@ var oxygen_animation = (function (exports, anime) {
       progress_circle.setAttribute("r", `${progress_size / 2}`);
       const title_y = getTitleY();
       text_necesar.setAttribute("y", `${title_y}`);
-      text_necesar_suma.setAttribute("y", `${title_y}`);
+      text_necesar_val.setAttribute("y", `${title_y}`);
+      const { y } = getCenter();
+      const inner_offset = getInnerTextOffset();
+      text_strans.setAttribute("y", `${y - inner_offset}`);
+      text_strans_val.setAttribute("y", `${y - inner_offset}`);
+      text_strans_val.textContent = formatNumber(suma);
+      text_donatori.setAttribute("y", `${y + inner_offset}`);
+      text_donatori_val.setAttribute("y", `${y + inner_offset}`);
+      text_donatori_val.textContent = String(donatori);
+      // renderScene();
   }
   function animate(data = { nume: "", suma: 0 }) {
       const { nume, suma } = data;
@@ -176,15 +189,52 @@ var oxygen_animation = (function (exports, anime) {
       });
       text_necesar.setAttribute("transform", `translate(0, -5)`);
       scene.appendChild(text_necesar);
-      text_necesar_suma = drawText(formatNumber(total), {
+      text_necesar_val = drawText(formatNumber(total), {
           fill: "#ffffff" /* white */,
           size: 37,
           x,
           y: title_y,
           valign: "hanging",
       });
-      text_necesar_suma.setAttribute("transform", `translate(0, 5)`);
-      scene.appendChild(text_necesar_suma);
+      text_necesar_val.setAttribute("transform", `translate(0, 5)`);
+      scene.appendChild(text_necesar_val);
+      const inner_text_offset = getInnerTextOffset();
+      text_strans = drawText("Suma stransa", {
+          fill: "#000000" /* black */,
+          size: 18,
+          x,
+          y: y - inner_text_offset,
+          valign: "baseline",
+      });
+      text_strans.setAttribute("transform", `translate(0, -5)`);
+      scene.appendChild(text_strans);
+      text_strans_val = drawText(formatNumber(suma), {
+          fill: "#000000" /* black */,
+          size: 38,
+          x,
+          y: y - inner_text_offset,
+          valign: "hanging",
+      });
+      text_strans_val.setAttribute("transform", `translate(0, 5)`);
+      scene.appendChild(text_strans_val);
+      text_donatori = drawText("Donatori", {
+          fill: "#000000" /* black */,
+          size: 18,
+          x,
+          y: y + inner_text_offset,
+          valign: "baseline",
+      });
+      text_donatori.setAttribute("transform", `translate(0, -5)`);
+      scene.appendChild(text_donatori);
+      text_donatori_val = drawText(String(donatori), {
+          fill: "#000000" /* black */,
+          size: 40,
+          x,
+          y: y + inner_text_offset,
+          valign: "hanging",
+      });
+      text_donatori_val.setAttribute("transform", `translate(0, 5)`);
+      scene.appendChild(text_donatori_val);
   }
   function getProgressWidth() {
       if (suma === 0) {
@@ -196,6 +246,10 @@ var oxygen_animation = (function (exports, anime) {
       const { y } = getCenter();
       // middle between the 2 circles
       return (y - getProgressWidth() / 2) / 2;
+  }
+  function getInnerTextOffset() {
+      // at half of the inner radius
+      return getProgressWidth() / 4 - 10;
   }
 
   exports.animate = animate;
