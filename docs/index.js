@@ -86,7 +86,7 @@ var oxygen_animation = (function (exports, anime) {
         return svg;
     }
     function getPathCoords(start, end) {
-        const inflexion_count = 4;
+        const inflexion_count = getRandom(20, 5);
         const amplitude = getRandomAmplitude();
         const step_x = (getCenter().x - start.x) / inflexion_count;
         const step_y = (getCenter().y - start.y) / inflexion_count;
@@ -100,7 +100,12 @@ var oxygen_animation = (function (exports, anime) {
             x: start.x + step_x / 2 - amplitude,
             y: start.y + step_y / 2,
         };
-        return `M ${start.x} ${start.y} Q ${control_point.x} ${control_point.y}, ${inflexion_points[0].x} ${inflexion_points[0].y} T ${inflexion_points[1].x} ${inflexion_points[1].y} T ${inflexion_points[2].x} ${inflexion_points[2].y} T ${end.x} ${end.y}`;
+        let bezier = `M ${start.x} ${start.y} Q ${control_point.x} ${control_point.y}, ${inflexion_points[0].x} ${inflexion_points[0].y}`;
+        for (let i = 1; i < inflexion_points.length; i++) {
+            bezier += ` T ${inflexion_points[i].x} ${inflexion_points[i].y}`;
+        }
+        bezier += ` T ${end.x} ${end.y}`;
+        return bezier;
     }
     function createPath(start, end) {
         const path = document.createElementNS(svgNS, "path");
@@ -148,7 +153,7 @@ var oxygen_animation = (function (exports, anime) {
         return Intl.NumberFormat("ro", {}).format(value);
     }
     function getRandomAmplitude() {
-        const amplitude = getRandom(35, 25);
+        const amplitude = getRandom(30, 20);
         if (getRandom(1) === 1) {
             return amplitude;
         }

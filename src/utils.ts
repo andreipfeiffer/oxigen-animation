@@ -73,7 +73,7 @@ export function generateScene(width: number, height: number) {
 }
 
 function getPathCoords(start: Point, end: Point) {
-  const inflexion_count = 4;
+  const inflexion_count = getRandom(20, 5);
   const amplitude = getRandomAmplitude();
   const step_x = (getCenter().x - start.x) / inflexion_count;
   const step_y = (getCenter().y - start.y) / inflexion_count;
@@ -90,7 +90,13 @@ function getPathCoords(start: Point, end: Point) {
     y: start.y + step_y / 2,
   };
 
-  return `M ${start.x} ${start.y} Q ${control_point.x} ${control_point.y}, ${inflexion_points[0].x} ${inflexion_points[0].y} T ${inflexion_points[1].x} ${inflexion_points[1].y} T ${inflexion_points[2].x} ${inflexion_points[2].y} T ${end.x} ${end.y}`;
+  let bezier = `M ${start.x} ${start.y} Q ${control_point.x} ${control_point.y}, ${inflexion_points[0].x} ${inflexion_points[0].y}`;
+  for (let i = 1; i < inflexion_points.length; i++) {
+    bezier += ` T ${inflexion_points[i].x} ${inflexion_points[i].y}`;
+  }
+  bezier += ` T ${end.x} ${end.y}`;
+
+  return bezier;
 }
 
 export function createPath(start: Point, end: Point) {
@@ -166,7 +172,7 @@ export function formatNumber(value: number) {
 }
 
 function getRandomAmplitude() {
-  const amplitude = getRandom(35, 25);
+  const amplitude = getRandom(30, 20);
   if (getRandom(1) === 1) {
     return amplitude;
   }
