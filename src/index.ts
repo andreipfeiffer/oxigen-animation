@@ -88,7 +88,7 @@ export async function animate(data: Donator = { nume: "", suma: 0 }) {
   const small_duration = 500;
 
   const start_x = getRandomPointX();
-  const start_y = HEIGHT - BUBBLE_RADIUS / 2;
+  const start_y = HEIGHT - BUBBLE_RADIUS;
   const end_x = start_x;
   const end_y = WIDTH / 2;
 
@@ -116,7 +116,7 @@ export async function animate(data: Donator = { nume: "", suma: 0 }) {
     targets: name.querySelector("circle"),
     opacity: [0, 1],
     r: [0, BUBBLE_RADIUS / 2],
-    easing: "easeOutBounce",
+    easing: "spring(1, 80, 10, 10)",
     duration: 1200,
   });
 
@@ -125,7 +125,7 @@ export async function animate(data: Donator = { nume: "", suma: 0 }) {
   const grow_in = anime({
     targets: name.querySelector("circle"),
     r: BUBBLE_RADIUS,
-    easing: "easeOutBounce",
+    easing: "spring(1, 100, 10, 0)",
     duration: 1200,
     delay: small_duration,
   });
@@ -133,7 +133,7 @@ export async function animate(data: Donator = { nume: "", suma: 0 }) {
     targets: name.querySelector(".texts"),
     opacity: 1,
     scale: [0, 1],
-    easing: "easeOutBounce",
+    easing: "spring(1, 100, 10, 0)",
     duration: 1200,
     delay: small_duration,
   });
