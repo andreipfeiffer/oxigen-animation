@@ -191,6 +191,9 @@ var oxygen_animation = (function (exports, anime) {
         const title_y = getTitleY();
         text_necesar.setAttributeNS(null, "y", `${title_y}`);
         text_necesar_val.setAttributeNS(null, "y", `${title_y}`);
+        const title_color = isTitleInside(title_y) ? "#FF0202" /* primary */ : "#ffffff" /* white */;
+        text_necesar.setAttributeNS(null, "fill", `${title_color}`);
+        text_necesar_val.setAttributeNS(null, "fill", `${title_color}`);
         const { y } = getCenter();
         const inner_offset = getInnerTextOffset();
         text_strans.setAttributeNS(null, "y", `${y - inner_offset}`);
@@ -351,8 +354,18 @@ var oxygen_animation = (function (exports, anime) {
     }
     function getTitleY() {
         const { y } = getCenter();
-        // middle between the 2 circles
-        return (y - getProgressWidth() / 2) / 2;
+        const progress_radius = getProgressWidth() / 2;
+        const middle_between_circles = (y - progress_radius) / 2;
+        const text_height = 18 + 37 + 10;
+        if (middle_between_circles - text_height < 0) {
+            return y - progress_radius + text_height;
+        }
+        return middle_between_circles;
+    }
+    function isTitleInside(value) {
+        const { y } = getCenter();
+        const progress_radius = getProgressWidth() / 2;
+        return value > y - progress_radius;
     }
     function getInnerTextOffset() {
         return 40;
