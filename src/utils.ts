@@ -65,6 +65,7 @@ export function generateScene(width: number, height: number) {
 
   const svg = document.createElementNS(svgNS, "svg");
   svg.style.display = "block";
+  svg.style.maxHeight = "100vh";
   svg.setAttributeNS(null, "viewBox", `0 0 ${width} ${height}`);
   svg.setAttributeNS(null, "x", `0px`);
   svg.setAttributeNS(null, "y", `0px`);
