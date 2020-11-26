@@ -7,6 +7,7 @@ const SCENE: Size = {
   w: 0,
   h: 0,
 };
+export const BUBBLE_RADIUS = 40;
 
 export const enum Color {
   primary = "#FF0202",
@@ -20,9 +21,12 @@ export function generateName(data: Donator) {
   text_group.setAttributeNS(null, "class", "texts");
   text_group.setAttributeNS(null, "opacity", "0");
 
-  const SIZE = 50;
-
-  const circle = drawCircle({ cx: 0, cy: 0, r: SIZE, fill: Color.white });
+  const circle = drawCircle({
+    cx: 0,
+    cy: 0,
+    r: BUBBLE_RADIUS,
+    fill: Color.white,
+  });
   circle.setAttributeNS(null, "stroke", Color.primary);
   circle.setAttributeNS(null, "stroke-width", "6");
 
@@ -99,7 +103,7 @@ function getPathCoords(start: Point) {
 
 export function generatePath() {
   const x = getRandom(SCENE.w);
-  const y = SCENE.h;
+  const y = SCENE.h - BUBBLE_RADIUS / 2;
   return createPath({ x, y });
 }
 

@@ -1,4 +1,5 @@
 import { Donator } from "./types";
+export declare const BUBBLE_RADIUS = 40;
 export declare const enum Color {
     primary = "#FF0202",
     black = "#000000",

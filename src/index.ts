@@ -10,6 +10,7 @@ import {
   getCenter,
   formatNumber,
   Color,
+  BUBBLE_RADIUS,
 } from "./utils";
 
 let scene: SVGSVGElement = null;
@@ -106,19 +107,18 @@ export async function animate(data: Donator = { nume: "", suma: 0 }) {
   const transition_in = anime({
     targets: name.querySelector("circle"),
     opacity: [0, 1],
-    r: [0, 20],
+    r: [0, BUBBLE_RADIUS / 2],
     easing: "easeOutBounce",
-    duration: 500,
-    delay: 400,
+    duration: 1200,
   });
 
   await transition_in.finished;
 
   const grow_in = anime({
     targets: name.querySelector("circle"),
-    r: 40,
+    r: BUBBLE_RADIUS,
     easing: "easeOutBounce",
-    duration: 1000,
+    duration: 1200,
     delay: small_duration,
   });
   anime({
@@ -126,7 +126,7 @@ export async function animate(data: Donator = { nume: "", suma: 0 }) {
     opacity: 1,
     scale: [0, 1],
     easing: "easeOutBounce",
-    duration: 500,
+    duration: 1200,
     delay: small_duration,
   });
 
@@ -135,7 +135,7 @@ export async function animate(data: Donator = { nume: "", suma: 0 }) {
   anime({
     targets: name.querySelector("circle"),
     strokeWidth: 0,
-    duration: 1000,
+    duration: 500,
     easing: "linear",
   });
 
@@ -143,7 +143,7 @@ export async function animate(data: Donator = { nume: "", suma: 0 }) {
     targets: [name.querySelector("circle"), name.querySelector(".texts")],
     scale: 0,
     opacity: 0,
-    duration: 1000,
+    duration: 1200,
     easing: "linear",
     delay: 2000,
   });

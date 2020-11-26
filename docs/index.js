@@ -36,13 +36,18 @@ var oxygen_animation = (function (exports, anime) {
         w: 0,
         h: 0,
     };
+    const BUBBLE_RADIUS = 40;
     function generateName(data) {
         const group = document.createElementNS(svgNS, "g");
         const text_group = document.createElementNS(svgNS, "g");
         text_group.setAttributeNS(null, "class", "texts");
         text_group.setAttributeNS(null, "opacity", "0");
-        const SIZE = 50;
-        const circle = drawCircle({ cx: 0, cy: 0, r: SIZE, fill: "#ffffff" /* white */ });
+        const circle = drawCircle({
+            cx: 0,
+            cy: 0,
+            r: BUBBLE_RADIUS,
+            fill: "#ffffff" /* white */,
+        });
         circle.setAttributeNS(null, "stroke", "#FF0202" /* primary */);
         circle.setAttributeNS(null, "stroke-width", "6");
         const nume = drawText(data.nume, {
@@ -100,7 +105,7 @@ var oxygen_animation = (function (exports, anime) {
     }
     function generatePath() {
         const x = getRandom(SCENE.w);
-        const y = SCENE.h;
+        const y = SCENE.h - BUBBLE_RADIUS / 2;
         return createPath({ x, y });
     }
     function createPath(start) {
@@ -221,17 +226,16 @@ var oxygen_animation = (function (exports, anime) {
             const transition_in = anime__default['default']({
                 targets: name.querySelector("circle"),
                 opacity: [0, 1],
-                r: [0, 20],
+                r: [0, BUBBLE_RADIUS / 2],
                 easing: "easeOutBounce",
-                duration: 500,
-                delay: 400,
+                duration: 1200,
             });
             yield transition_in.finished;
             const grow_in = anime__default['default']({
                 targets: name.querySelector("circle"),
-                r: 40,
+                r: BUBBLE_RADIUS,
                 easing: "easeOutBounce",
-                duration: 1000,
+                duration: 1200,
                 delay: small_duration,
             });
             anime__default['default']({
@@ -239,21 +243,21 @@ var oxygen_animation = (function (exports, anime) {
                 opacity: 1,
                 scale: [0, 1],
                 easing: "easeOutBounce",
-                duration: 500,
+                duration: 1200,
                 delay: small_duration,
             });
             yield grow_in.finished;
             anime__default['default']({
                 targets: name.querySelector("circle"),
                 strokeWidth: 0,
-                duration: 1000,
+                duration: 500,
                 easing: "linear",
             });
             anime__default['default']({
                 targets: [name.querySelector("circle"), name.querySelector(".texts")],
                 scale: 0,
                 opacity: 0,
-                duration: 1000,
+                duration: 1200,
                 easing: "linear",
                 delay: 2000,
             });
