@@ -80,8 +80,8 @@ export async function animate(data: Donator = { nume: "", suma: 0 }) {
     throw new Error("Not initialized! Call .init() first");
   }
 
-  // @todo randomize this
-  const total_duration = 6000;
+  const total_duration = getTotalDuration();
+
   // outside
   const small_duration = 500;
 
@@ -253,4 +253,13 @@ function getTitleY() {
 function getInnerTextOffset() {
   // at half of the inner radius
   return getProgressWidth() / 4 - 10;
+}
+
+function getTotalDuration() {
+  const progress_ratio = WIDTH / getProgressWidth();
+
+  // the larger the inner circle
+  // the smaller the distance
+  // so we need a longer period to display the name
+  return 8000 + 3000 / progress_ratio;
 }
