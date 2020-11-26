@@ -87,7 +87,7 @@ var oxygen_animation = (function (exports, anime) {
     }
     function getPathCoords(start, end) {
         const inflexion_count = 4;
-        const amplitude = 30;
+        const amplitude = getRandomAmplitude();
         const step_x = (getCenter().x - start.x) / inflexion_count;
         const step_y = (getCenter().y - start.y) / inflexion_count;
         const inflexion_points = Array(inflexion_count - 1)
@@ -146,6 +146,13 @@ var oxygen_animation = (function (exports, anime) {
     }
     function formatNumber(value) {
         return Intl.NumberFormat("ro", {}).format(value);
+    }
+    function getRandomAmplitude() {
+        const amplitude = getRandom(35, 25);
+        if (getRandom(1) === 1) {
+            return amplitude;
+        }
+        return -amplitude;
     }
 
     let scene = null;
