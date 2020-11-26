@@ -73,7 +73,7 @@ export function generateScene(width: number, height: number) {
 }
 
 function getPathCoords(start: Point, end: Point) {
-  const inflexion_count = getRandom(20, 5);
+  const inflexion_count = getRandom(10, 5);
   const amplitude = getRandomAmplitude();
   const step_x = (getCenter().x - start.x) / inflexion_count;
   const step_y = (getCenter().y - start.y) / inflexion_count;
