@@ -87,10 +87,12 @@ export async function animate(data: Donator = { nume: "", suma: 0 }) {
   // outside
   const small_duration = 500;
 
-  const x = getRandomPointX();
-  const y = HEIGHT - BUBBLE_RADIUS / 2;
+  const start_x = getRandomPointX();
+  const start_y = HEIGHT - BUBBLE_RADIUS / 2;
+  const end_x = start_x;
+  const end_y = WIDTH / 2;
 
-  const path = createPath({ x, y });
+  const path = createPath({ x: start_x, y: start_y }, { x: end_x, y: end_y });
   bubbles_container.appendChild(path);
 
   const name = generateName(data);
@@ -263,7 +265,7 @@ function getTotalDuration() {
 
 function getRandomPointX() {
   const progress_width = getProgressWidth();
-  const min_x = WIDTH / 2 - progress_width / 2 + BUBBLE_RADIUS / 2;
-  const max_x = WIDTH / 2 + progress_width / 2 + BUBBLE_RADIUS / 2;
+  const min_x = WIDTH / 2 - progress_width / 2 + BUBBLE_RADIUS;
+  const max_x = WIDTH / 2 + progress_width / 2 - BUBBLE_RADIUS;
   return getRandom(max_x, min_x);
 }

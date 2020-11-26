@@ -72,7 +72,7 @@ export function generateScene(width: number, height: number) {
   return svg;
 }
 
-function getPathCoords(start: Point) {
+function getPathCoords(start: Point, end: Point) {
   const inflexion_count = 4;
   const amplitude = 30;
   const step_x = (getCenter().x - start.x) / inflexion_count;
@@ -90,20 +90,14 @@ function getPathCoords(start: Point) {
     y: start.y + step_y / 2,
   };
 
-  return `M ${start.x} ${start.y} Q ${control_point.x} ${control_point.y}, ${
-    inflexion_points[0].x
-  } ${inflexion_points[0].y} T ${inflexion_points[1].x} ${
-    inflexion_points[1].y
-  } T ${inflexion_points[2].x} ${inflexion_points[2].y} T ${start.x} ${
-    getCenter().y
-  }`;
+  return `M ${start.x} ${start.y} Q ${control_point.x} ${control_point.y}, ${inflexion_points[0].x} ${inflexion_points[0].y} T ${inflexion_points[1].x} ${inflexion_points[1].y} T ${inflexion_points[2].x} ${inflexion_points[2].y} T ${end.x} ${end.y}`;
 }
 
-export function createPath(start: Point) {
+export function createPath(start: Point, end: Point) {
   const path = document.createElementNS(svgNS, "path");
   path.setAttributeNS(null, "fill", "none");
   path.setAttributeNS(null, "stroke", "none");
-  path.setAttributeNS(null, "d", getPathCoords(start));
+  path.setAttributeNS(null, "d", getPathCoords(start, end));
 
   return path;
 }

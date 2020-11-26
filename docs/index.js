@@ -85,7 +85,7 @@ var oxygen_animation = (function (exports, anime) {
         svg.setAttributeNS(null, "y", `0px`);
         return svg;
     }
-    function getPathCoords(start) {
+    function getPathCoords(start, end) {
         const inflexion_count = 4;
         const amplitude = 30;
         const step_x = (getCenter().x - start.x) / inflexion_count;
@@ -100,13 +100,13 @@ var oxygen_animation = (function (exports, anime) {
             x: start.x + step_x / 2 - amplitude,
             y: start.y + step_y / 2,
         };
-        return `M ${start.x} ${start.y} Q ${control_point.x} ${control_point.y}, ${inflexion_points[0].x} ${inflexion_points[0].y} T ${inflexion_points[1].x} ${inflexion_points[1].y} T ${inflexion_points[2].x} ${inflexion_points[2].y} T ${start.x} ${getCenter().y}`;
+        return `M ${start.x} ${start.y} Q ${control_point.x} ${control_point.y}, ${inflexion_points[0].x} ${inflexion_points[0].y} T ${inflexion_points[1].x} ${inflexion_points[1].y} T ${inflexion_points[2].x} ${inflexion_points[2].y} T ${end.x} ${end.y}`;
     }
-    function createPath(start) {
+    function createPath(start, end) {
         const path = document.createElementNS(svgNS, "path");
         path.setAttributeNS(null, "fill", "none");
         path.setAttributeNS(null, "stroke", "none");
-        path.setAttributeNS(null, "d", getPathCoords(start));
+        path.setAttributeNS(null, "d", getPathCoords(start, end));
         return path;
     }
     function getRandom(max, min = 0) {
@@ -202,9 +202,11 @@ var oxygen_animation = (function (exports, anime) {
             const total_duration = getTotalDuration();
             // outside
             const small_duration = 500;
-            const x = getRandomPointX();
-            const y = HEIGHT - BUBBLE_RADIUS / 2;
-            const path = createPath({ x, y });
+            const start_x = getRandomPointX();
+            const start_y = HEIGHT - BUBBLE_RADIUS / 2;
+            const end_x = start_x;
+            const end_y = WIDTH / 2;
+            const path = createPath({ x: start_x, y: start_y }, { x: end_x, y: end_y });
             bubbles_container.appendChild(path);
             const name = generateName(data);
             bubbles_container.appendChild(name);
@@ -350,8 +352,8 @@ var oxygen_animation = (function (exports, anime) {
     }
     function getRandomPointX() {
         const progress_width = getProgressWidth();
-        const min_x = WIDTH / 2 - progress_width / 2 + BUBBLE_RADIUS / 2;
-        const max_x = WIDTH / 2 + progress_width / 2 + BUBBLE_RADIUS / 2;
+        const min_x = WIDTH / 2 - progress_width / 2 + BUBBLE_RADIUS;
+        const max_x = WIDTH / 2 + progress_width / 2 - BUBBLE_RADIUS;
         return getRandom(max_x, min_x);
     }
 
