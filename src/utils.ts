@@ -28,7 +28,7 @@ export function generateName(data: Donator) {
     fill: Color.white,
   });
   circle.setAttributeNS(null, "stroke", Color.primary);
-  circle.setAttributeNS(null, "stroke-width", "6");
+  circle.setAttributeNS(null, "stroke-width", "5");
 
   const nume = drawText(data.nume, {
     fill: Color.black,

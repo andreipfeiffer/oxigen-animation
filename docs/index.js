@@ -49,7 +49,7 @@ var oxygen_animation = (function (exports, anime) {
             fill: "#ffffff" /* white */,
         });
         circle.setAttributeNS(null, "stroke", "#FF0202" /* primary */);
-        circle.setAttributeNS(null, "stroke-width", "6");
+        circle.setAttributeNS(null, "stroke-width", "5");
         const nume = drawText(data.nume, {
             fill: "#000000" /* black */,
             size: 11,
@@ -166,7 +166,7 @@ var oxygen_animation = (function (exports, anime) {
     let text_donatori_val = null;
     let progress_circle = null;
     const WIDTH = 650;
-    const HEIGHT = WIDTH + 200;
+    const HEIGHT = WIDTH + 300;
     let total = 0;
     let suma = 0;
     let donatori = 0;
@@ -378,7 +378,7 @@ var oxygen_animation = (function (exports, anime) {
         // the larger the inner circle
         // the smaller the distance
         // so we need a longer period to display the name
-        return 8000 + 3000 / progress_ratio;
+        return 8000 + 4000 / progress_ratio;
     }
     function getRandomPointX() {
         const progress_width = getProgressWidth();

@@ -30,7 +30,7 @@ let text_donatori_val: SVGTextElement = null;
 let progress_circle: SVGCircleElement = null;
 
 const WIDTH = 650;
-const HEIGHT = WIDTH + 200;
+const HEIGHT = WIDTH + 300;
 let total = 0;
 let suma = 0;
 let donatori = 0;
@@ -292,7 +292,7 @@ function getTotalDuration() {
   // the larger the inner circle
   // the smaller the distance
   // so we need a longer period to display the name
-  return 8000 + 3000 / progress_ratio;
+  return 8000 + 4000 / progress_ratio;
 }
 
 function getRandomPointX() {
