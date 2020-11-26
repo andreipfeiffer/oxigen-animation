@@ -48,6 +48,7 @@ export function init(data: Init) {
   data.element.appendChild(scene);
 
   renderScene();
+  suma && update({ total_strans: suma, donatori });
 }
 
 export function update(data: Progres) {

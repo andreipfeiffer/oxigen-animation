@@ -185,6 +185,7 @@ var oxygen_animation = (function (exports, anime) {
         scene = generateScene(WIDTH, HEIGHT);
         data.element.appendChild(scene);
         renderScene();
+        suma && update({ total_strans: suma, donatori });
     }
     function update(data) {
         if (!scene) {
