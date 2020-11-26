@@ -31,6 +31,7 @@ let progress_circle: SVGCircleElement = null;
 
 const WIDTH = 650;
 const HEIGHT = WIDTH + 300;
+const OVERFLOW = 20;
 let total = 0;
 let suma = 0;
 let donatori = 0;
@@ -56,6 +57,15 @@ export function update(data: Progres) {
 
   suma = data.total_strans;
   donatori = data.donatori;
+
+  const isOverflow = suma > total;
+  anime({
+    targets: total_circle,
+    r: isOverflow ? WIDTH / 2 - OVERFLOW : WIDTH / 2,
+    strokeWidth: isOverflow ? OVERFLOW : 0,
+    easing: "easeOutQuart",
+    duration: 1000,
+  });
 
   const progress_size = getProgressWidth();
   anime({
@@ -172,6 +182,9 @@ function renderScene() {
   const { x, y } = getCenter();
 
   total_circle = drawCircle({ cx: x, cy: y, r: x, fill: Color.primary });
+  total_circle.setAttributeNS(null, "paint-order", "stroke");
+  total_circle.setAttributeNS(null, "stroke", `${Color.primary}44`);
+  total_circle.setAttributeNS(null, "stroke-width", "0");
   scene.appendChild(total_circle);
 
   anime({
@@ -275,8 +288,11 @@ function getProgressWidth() {
     return 0;
   }
 
-  const progress = (suma * WIDTH) / total;
+  if (suma > total) {
+    return WIDTH - 2 * OVERFLOW - 10;
+  }
 
+  const progress = (suma * WIDTH) / total;
   return Math.min(progress, WIDTH - 10);
 }
 

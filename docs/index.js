@@ -167,6 +167,7 @@ var oxygen_animation = (function (exports, anime) {
     let progress_circle = null;
     const WIDTH = 650;
     const HEIGHT = WIDTH + 300;
+    const OVERFLOW = 20;
     let total = 0;
     let suma = 0;
     let donatori = 0;
@@ -186,6 +187,14 @@ var oxygen_animation = (function (exports, anime) {
         }
         suma = data.total_strans;
         donatori = data.donatori;
+        const isOverflow = suma > total;
+        anime__default['default']({
+            targets: total_circle,
+            r: isOverflow ? WIDTH / 2 - OVERFLOW : WIDTH / 2,
+            strokeWidth: isOverflow ? OVERFLOW : 0,
+            easing: "easeOutQuart",
+            duration: 1000,
+        });
         const progress_size = getProgressWidth();
         anime__default['default']({
             targets: progress_circle,
@@ -281,6 +290,9 @@ var oxygen_animation = (function (exports, anime) {
     function renderScene() {
         const { x, y } = getCenter();
         total_circle = drawCircle({ cx: x, cy: y, r: x, fill: "#FF0202" /* primary */ });
+        total_circle.setAttributeNS(null, "paint-order", "stroke");
+        total_circle.setAttributeNS(null, "stroke", `${"#FF0202" /* primary */}44`);
+        total_circle.setAttributeNS(null, "stroke-width", "0");
         scene.appendChild(total_circle);
         anime__default['default']({
             targets: total_circle,
@@ -369,6 +381,9 @@ var oxygen_animation = (function (exports, anime) {
     function getProgressWidth() {
         if (suma === 0) {
             return 0;
+        }
+        if (suma > total) {
+            return WIDTH - 2 * OVERFLOW - 10;
         }
         const progress = (suma * WIDTH) / total;
         return Math.min(progress, WIDTH - 10);
