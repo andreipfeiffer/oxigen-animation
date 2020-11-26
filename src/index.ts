@@ -73,8 +73,6 @@ export function update(data: Progres) {
   text_donatori.setAttributeNS(null, "y", `${y + inner_offset}`);
   text_donatori_val.setAttributeNS(null, "y", `${y + inner_offset}`);
   text_donatori_val.textContent = String(donatori);
-
-  // renderScene();
 }
 
 export async function animate(data: Donator = { nume: "", suma: 0 }) {
@@ -82,10 +80,12 @@ export async function animate(data: Donator = { nume: "", suma: 0 }) {
     throw new Error("Not initialized! Call .init() first");
   }
 
+  let merged = false;
+
   const total_duration = getTotalDuration();
 
   // outside
-  const small_duration = 500;
+  const small_duration = 1000;
 
   const start_x = getRandomPointX();
   const start_y = HEIGHT - BUBBLE_RADIUS;
@@ -100,7 +100,7 @@ export async function animate(data: Donator = { nume: "", suma: 0 }) {
 
   var p = anime.path(path);
 
-  const path_motion = anime({
+  anime({
     targets: name,
     translateX: p("x"),
     translateY: p("y"),
@@ -109,6 +109,29 @@ export async function animate(data: Donator = { nume: "", suma: 0 }) {
     complete: function () {
       bubbles_container.removeChild(path);
       bubbles_container.removeChild(name);
+    },
+    update: function () {
+      const str = name.style.transform;
+      const pos_start = str.indexOf("translateY") + "translateY".length + 1;
+      const pos_end = str.indexOf(")", pos_start);
+      const y = parseInt(str.substring(pos_start, pos_end));
+
+      const progress_bottom =
+        WIDTH / 2 + getProgressWidth() / 2 + BUBBLE_RADIUS / 2;
+
+      if (!merged && y <= progress_bottom) {
+        merged = true;
+
+        const radius = +progress_circle.getAttributeNS(null, "r");
+
+        anime({
+          targets: progress_circle,
+          keyframes: [
+            { r: radius + 3, easing: "easeInQuad", duration: 100 },
+            { r: radius, easing: "spring(1, 100, 10, 0)", duration: 300 },
+          ],
+        });
+      }
     },
   });
 
@@ -136,19 +159,6 @@ export async function animate(data: Donator = { nume: "", suma: 0 }) {
     easing: "spring(1, 100, 10, 0)",
     duration: 1200,
     delay: small_duration,
-  });
-
-  await grow_in.finished;
-
-  await path_motion.finished;
-
-  // trigger this when entering the inner circle
-  anime({
-    targets: progress_circle,
-    keyframes: [
-      { r: "+=3", easing: "easeInQuad", duration: 100 },
-      { r: "-=3", easing: "spring(1, 100, 10, 0)", duration: 500 },
-    ],
   });
 }
 

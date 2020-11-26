@@ -199,16 +199,16 @@ var oxygen_animation = (function (exports, anime) {
         text_donatori.setAttributeNS(null, "y", `${y + inner_offset}`);
         text_donatori_val.setAttributeNS(null, "y", `${y + inner_offset}`);
         text_donatori_val.textContent = String(donatori);
-        // renderScene();
     }
     function animate(data = { nume: "", suma: 0 }) {
         return __awaiter(this, void 0, void 0, function* () {
             if (!scene) {
                 throw new Error("Not initialized! Call .init() first");
             }
+            let merged = false;
             const total_duration = getTotalDuration();
             // outside
-            const small_duration = 500;
+            const small_duration = 1000;
             const start_x = getRandomPointX();
             const start_y = HEIGHT - BUBBLE_RADIUS;
             const end_x = start_x;
@@ -218,7 +218,7 @@ var oxygen_animation = (function (exports, anime) {
             const name = generateName(data);
             bubbles_container.appendChild(name);
             var p = anime__default['default'].path(path);
-            const path_motion = anime__default['default']({
+            anime__default['default']({
                 targets: name,
                 translateX: p("x"),
                 translateY: p("y"),
@@ -227,6 +227,24 @@ var oxygen_animation = (function (exports, anime) {
                 complete: function () {
                     bubbles_container.removeChild(path);
                     bubbles_container.removeChild(name);
+                },
+                update: function () {
+                    const str = name.style.transform;
+                    const pos_start = str.indexOf("translateY") + "translateY".length + 1;
+                    const pos_end = str.indexOf(")", pos_start);
+                    const y = parseInt(str.substring(pos_start, pos_end));
+                    const progress_bottom = WIDTH / 2 + getProgressWidth() / 2 + BUBBLE_RADIUS / 2;
+                    if (!merged && y <= progress_bottom) {
+                        merged = true;
+                        const radius = +progress_circle.getAttributeNS(null, "r");
+                        anime__default['default']({
+                            targets: progress_circle,
+                            keyframes: [
+                                { r: radius + 3, easing: "easeInQuad", duration: 100 },
+                                { r: radius, easing: "spring(1, 100, 10, 0)", duration: 300 },
+                            ],
+                        });
+                    }
                 },
             });
             const transition_in = anime__default['default']({
@@ -251,16 +269,6 @@ var oxygen_animation = (function (exports, anime) {
                 easing: "spring(1, 100, 10, 0)",
                 duration: 1200,
                 delay: small_duration,
-            });
-            yield grow_in.finished;
-            yield path_motion.finished;
-            // trigger this when entering the inner circle
-            anime__default['default']({
-                targets: progress_circle,
-                keyframes: [
-                    { r: "+=3", easing: "easeInQuad", duration: 100 },
-                    { r: "-=3", easing: "spring(1, 100, 10, 0)", duration: 500 },
-                ],
             });
         });
     }
