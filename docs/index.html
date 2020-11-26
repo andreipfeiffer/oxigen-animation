@@ -7,53 +7,50 @@
 </head>
 
 <body>
-  <div id="app">
+  <div style="display: grid; grid-template-columns: 1fr 1fr; grid-auto-rows: 100vh;">
+    <div>
+      <form id="init-form">
+        <label>Necesar:
+          <input type="text" name="necesar" value="2500000" />
+        </label>
+      </form>
 
-    <div style="display: grid; grid-template-columns: 1fr 1fr;">
-      <div>
-        <form id="init-form">
-          <label>Necesar:
-            <input type="text" name="necesar" value="2500000" />
-          </label>
-        </form>
+      <br />
+      <br />
 
-        <br />
-        <br />
-
-        <form id="update-form">
-          <label>Suma stransa:
-            <input type="number" name="strans" value="800000" />
-          </label>
-
-          <br />
-
-          <label>Donatori:
-            <input type="number" name="donatori" value="125" />
-          </label>
-        </form>
+      <form id="update-form">
+        <label>Suma stransa:
+          <input type="number" name="strans" value="800000" />
+        </label>
 
         <br />
+
+        <label>Donatori:
+          <input type="number" name="donatori" value="125" />
+        </label>
+      </form>
+
+      <br />
+      <br />
+
+      <form id="animate-form">
+        <label>Nume:
+          <input type="text" name="nume" value="Andrei" />
+        </label>
+
         <br />
 
-        <form id="animate-form">
-          <label>Nume:
-            <input type="text" name="nume" value="Andrei" />
-          </label>
+        <label>Suma:
+          <input type="number" name="suma" value="200" />
+        </label>
 
-          <br />
+        <br />
 
-          <label>Suma:
-            <input type="number" name="suma" value="200" />
-          </label>
-
-          <br />
-
-          <button type="submit">Animate</button>
-        </form>
-
-      </div>
-      <div id="animation-stage" style="border: 1px #aaa solid"></div>
+        <button type="submit">Animate</button>
+      </form>
     </div>
+
+    <div id="animation-stage" style="border: 1px #eee solid;"></div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
