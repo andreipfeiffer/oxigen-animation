@@ -254,7 +254,9 @@ function getProgressWidth() {
     return 0;
   }
 
-  return (suma * WIDTH) / total;
+  const progress = (suma * WIDTH) / total;
+
+  return Math.min(progress, WIDTH - 10);
 }
 
 function getTitleY() {

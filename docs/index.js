@@ -350,7 +350,8 @@ var oxygen_animation = (function (exports, anime) {
         if (suma === 0) {
             return 0;
         }
-        return (suma * WIDTH) / total;
+        const progress = (suma * WIDTH) / total;
+        return Math.min(progress, WIDTH - 10);
     }
     function getTitleY() {
         const { y } = getCenter();
