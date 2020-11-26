@@ -58,24 +58,26 @@ export function update(data: Progres) {
   donatori = data.donatori;
 
   const progress_size = getProgressWidth();
-  progress_circle.setAttributeNS(null, "r", `${progress_size / 2}`);
+  anime({
+    targets: progress_circle,
+    r: progress_size / 2,
+    easing: "spring(1, 100, 10, 0)",
+    duration: 1000,
+  });
 
   const title_y = getTitleY();
-  text_necesar.setAttributeNS(null, "y", `${title_y}`);
-  text_necesar_val.setAttributeNS(null, "y", `${title_y}`);
+  anime({
+    targets: [text_necesar, text_necesar_val],
+    y: title_y,
+    easing: "easeOutQuart",
+    duration: 1000,
+  });
 
   const title_color = isTitleInside(title_y) ? Color.primary : Color.white;
   text_necesar.setAttributeNS(null, "fill", `${title_color}`);
   text_necesar_val.setAttributeNS(null, "fill", `${title_color}`);
 
-  const { y } = getCenter();
-  const inner_offset = getInnerTextOffset();
-  text_strans.setAttributeNS(null, "y", `${y - inner_offset}`);
-  text_strans_val.setAttributeNS(null, "y", `${y - inner_offset}`);
   text_strans_val.textContent = formatNumber(suma);
-
-  text_donatori.setAttributeNS(null, "y", `${y + inner_offset}`);
-  text_donatori_val.setAttributeNS(null, "y", `${y + inner_offset}`);
   text_donatori_val.textContent = String(donatori);
 }
 
@@ -168,10 +170,16 @@ export async function animate(data: Donator = { nume: "", suma: 0 }) {
 
 function renderScene() {
   const { x, y } = getCenter();
-  const progress_width = getProgressWidth();
 
   total_circle = drawCircle({ cx: x, cy: y, r: x, fill: Color.primary });
   scene.appendChild(total_circle);
+
+  anime({
+    targets: total_circle,
+    r: [0, x],
+    easing: "easeOutQuart",
+    duration: 1000,
+  });
 
   bubbles_container = createGroup();
   scene.appendChild(bubbles_container);
@@ -179,7 +187,7 @@ function renderScene() {
   progress_circle = drawCircle({
     cx: x,
     cy: y,
-    r: progress_width / 2,
+    r: 0,
     fill: Color.white,
   });
   scene.appendChild(progress_circle);
@@ -212,41 +220,54 @@ function renderScene() {
     fill: Color.black,
     size: 18,
     x,
-    y: y - inner_text_offset,
+    y: y - inner_text_offset - 5,
     valign: "baseline",
   });
-  text_strans.setAttributeNS(null, "transform", `translate(0, -5)`);
   scene.appendChild(text_strans);
 
   text_strans_val = drawText(formatNumber(suma), {
     fill: Color.black,
     size: 38,
     x,
-    y: y - inner_text_offset,
+    y: y - inner_text_offset + 5,
     valign: "hanging",
   });
-  text_strans_val.setAttributeNS(null, "transform", `translate(0, 5)`);
   scene.appendChild(text_strans_val);
 
   text_donatori = drawText("Donatori", {
     fill: Color.black,
     size: 18,
     x,
-    y: y + inner_text_offset,
+    y: y + inner_text_offset - 5,
     valign: "baseline",
   });
-  text_donatori.setAttributeNS(null, "transform", `translate(0, -5)`);
   scene.appendChild(text_donatori);
 
   text_donatori_val = drawText(String(donatori), {
     fill: Color.black,
     size: 40,
     x,
-    y: y + inner_text_offset,
+    y: y + inner_text_offset + 5,
     valign: "hanging",
   });
-  text_donatori_val.setAttributeNS(null, "transform", `translate(0, 5)`);
   scene.appendChild(text_donatori_val);
+
+  anime({
+    targets: [text_strans, text_strans_val],
+    opacity: [0, 1],
+    translateY: [20, 0],
+    easing: "easeOutQuart",
+    duration: 2000,
+    delay: 500,
+  });
+  anime({
+    targets: [text_donatori, text_donatori_val],
+    opacity: [0, 1],
+    translateY: [-20, 0],
+    easing: "easeOutQuart",
+    duration: 2000,
+    delay: 500,
+  });
 }
 
 function getProgressWidth() {
