@@ -102,6 +102,7 @@ function getPathCoords(start: Point) {
 }
 
 export function generatePath() {
+  // @todo maybe these should be passed, as we need the width of the inner circle
   const x = getRandom(SCENE.w);
   const y = SCENE.h - BUBBLE_RADIUS / 2;
   return createPath({ x, y });

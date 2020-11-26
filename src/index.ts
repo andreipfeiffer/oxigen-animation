@@ -97,10 +97,11 @@ export async function animate(data: Donator = { nume: "", suma: 0 }) {
     targets: name,
     translateX: p("x"),
     translateY: p("y"),
-    easing: "easeInOutSine",
+    easing: "easeInSine",
     duration: total_duration,
     complete: function () {
       bubbles_container.removeChild(path);
+      bubbles_container.removeChild(name);
     },
   });
 
@@ -132,25 +133,16 @@ export async function animate(data: Donator = { nume: "", suma: 0 }) {
 
   await grow_in.finished;
 
-  anime({
-    targets: name.querySelector("circle"),
-    strokeWidth: 0,
-    duration: 500,
-    easing: "linear",
-  });
-
-  anime({
-    targets: [name.querySelector("circle"), name.querySelector(".texts")],
-    scale: 0,
-    opacity: 0,
-    duration: 1200,
-    easing: "linear",
-    delay: 2000,
-  });
-
   await path_motion.finished;
 
-  // @todo do something with the inner circle, ie: small pulse
+  // trigger this when entering the inner circle
+  anime({
+    targets: progress_circle,
+    keyframes: [
+      { r: "+=3", easing: "easeInQuad", duration: 100 },
+      { r: "-=3", easing: "spring(1, 100, 10, 0)", duration: 500 },
+    ],
+  });
 }
 
 function renderScene() {

@@ -104,6 +104,7 @@ var oxygen_animation = (function (exports, anime) {
         // return `M ${start.x} ${start.y} Q 52.5 100, 95 60 T ${getCenter().x} ${getCenter().y}`;
     }
     function generatePath() {
+        // @todo maybe these should be passed, as we need the width of the inner circle
         const x = getRandom(SCENE.w);
         const y = SCENE.h - BUBBLE_RADIUS / 2;
         return createPath({ x, y });
@@ -204,8 +205,7 @@ var oxygen_animation = (function (exports, anime) {
             if (!scene) {
                 throw new Error("Not initialized! Call .init() first");
             }
-            // @todo randomize this
-            const total_duration = 6000;
+            const total_duration = getTotalDuration();
             // outside
             const small_duration = 500;
             const path = generatePath();
@@ -217,10 +217,11 @@ var oxygen_animation = (function (exports, anime) {
                 targets: name,
                 translateX: p("x"),
                 translateY: p("y"),
-                easing: "easeInOutSine",
+                easing: "easeInSine",
                 duration: total_duration,
                 complete: function () {
                     bubbles_container.removeChild(path);
+                    bubbles_container.removeChild(name);
                 },
             });
             const transition_in = anime__default['default']({
@@ -247,22 +248,15 @@ var oxygen_animation = (function (exports, anime) {
                 delay: small_duration,
             });
             yield grow_in.finished;
-            anime__default['default']({
-                targets: name.querySelector("circle"),
-                strokeWidth: 0,
-                duration: 500,
-                easing: "linear",
-            });
-            anime__default['default']({
-                targets: [name.querySelector("circle"), name.querySelector(".texts")],
-                scale: 0,
-                opacity: 0,
-                duration: 1200,
-                easing: "linear",
-                delay: 2000,
-            });
             yield path_motion.finished;
-            // @todo do something with the inner circle, ie: small pulse
+            // trigger this when entering the inner circle
+            anime__default['default']({
+                targets: progress_circle,
+                keyframes: [
+                    { r: "+=3", easing: "easeInQuad", duration: 100 },
+                    { r: "-=3", easing: "spring(1, 100, 10, 0)", duration: 500 },
+                ],
+            });
         });
     }
     function renderScene() {
@@ -350,6 +344,13 @@ var oxygen_animation = (function (exports, anime) {
     function getInnerTextOffset() {
         // at half of the inner radius
         return getProgressWidth() / 4 - 10;
+    }
+    function getTotalDuration() {
+        const progress_ratio = WIDTH / getProgressWidth();
+        // the larger the inner circle
+        // the smaller the distance
+        // so we need a longer period to display the name
+        return 8000 + 3000 / progress_ratio;
     }
 
     exports.animate = animate;
