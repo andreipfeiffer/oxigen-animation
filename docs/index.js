@@ -255,7 +255,7 @@ var oxygen_animation = (function (exports, anime) {
                 duration: 1200,
             });
             yield transition_in.finished;
-            const grow_in = anime__default['default']({
+            anime__default['default']({
                 targets: name.querySelector("circle"),
                 r: BUBBLE_RADIUS,
                 easing: "spring(1, 100, 10, 0)",
@@ -355,8 +355,9 @@ var oxygen_animation = (function (exports, anime) {
         return (y - getProgressWidth() / 2) / 2;
     }
     function getInnerTextOffset() {
+        return 40;
         // at half of the inner radius
-        return getProgressWidth() / 4 - 10;
+        // return getProgressWidth() / 4 - 10;
     }
     function getTotalDuration() {
         const progress_ratio = WIDTH / getProgressWidth();

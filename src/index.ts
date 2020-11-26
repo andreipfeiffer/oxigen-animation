@@ -145,7 +145,7 @@ export async function animate(data: Donator = { nume: "", suma: 0 }) {
 
   await transition_in.finished;
 
-  const grow_in = anime({
+  anime({
     targets: name.querySelector("circle"),
     r: BUBBLE_RADIUS,
     easing: "spring(1, 100, 10, 0)",
@@ -260,8 +260,9 @@ function getTitleY() {
 }
 
 function getInnerTextOffset() {
+  return 40;
   // at half of the inner radius
-  return getProgressWidth() / 4 - 10;
+  // return getProgressWidth() / 4 - 10;
 }
 
 function getTotalDuration() {
