@@ -89,23 +89,13 @@ function getPathCoords(start: Point) {
     y: start.y + step_y / 2,
   };
 
-  // console.log({ inflexion_points });
-
   return `M ${start.x} ${start.y} Q ${control_point.x} ${control_point.y}, ${
     inflexion_points[0].x
   } ${inflexion_points[0].y} T ${inflexion_points[1].x} ${
     inflexion_points[1].y
-  } T ${inflexion_points[2].x} ${inflexion_points[2].y} T ${getCenter().x} ${
+  } T ${inflexion_points[2].x} ${inflexion_points[2].y} T ${start.x} ${
     getCenter().y
   }`;
-  // return `M ${start.x} ${start.y} Q 52.5 100, 95 60 T ${getCenter().x} ${getCenter().y}`;
-}
-
-export function generatePath() {
-  // @todo maybe these should be passed, as we need the width of the inner circle
-  const x = getRandom(SCENE.w);
-  const y = SCENE.h - BUBBLE_RADIUS / 2;
-  return createPath({ x, y });
 }
 
 export function createPath(start: Point) {

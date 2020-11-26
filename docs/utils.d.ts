@@ -7,7 +7,6 @@ export declare const enum Color {
 }
 export declare function generateName(data: Donator): SVGGElement;
 export declare function generateScene(width: number, height: number): SVGSVGElement;
-export declare function generatePath(): SVGPathElement;
 export declare function createPath(start: Point): SVGPathElement;
 export declare function getRandom(max: number, min?: number): number;
 export declare function getCenter(): Point;

@@ -3,7 +3,7 @@ import { Init, Progres, Donator } from "./types";
 import {
   generateName,
   generateScene,
-  generatePath,
+  createPath,
   drawCircle,
   drawText,
   createGroup,
@@ -11,6 +11,7 @@ import {
   formatNumber,
   Color,
   BUBBLE_RADIUS,
+  getRandom,
 } from "./utils";
 
 let scene: SVGSVGElement = null;
@@ -29,6 +30,7 @@ let text_donatori_val: SVGTextElement = null;
 let progress_circle: SVGCircleElement = null;
 
 const WIDTH = 650;
+const HEIGHT = WIDTH + 200;
 let total = 0;
 let suma = 0;
 let donatori = 0;
@@ -41,7 +43,7 @@ export function init(data: Init) {
   total = data.total_necesar;
 
   // store scene reference
-  scene = generateScene(WIDTH, WIDTH + 200);
+  scene = generateScene(WIDTH, HEIGHT);
   data.element.appendChild(scene);
 
   renderScene();
@@ -85,7 +87,10 @@ export async function animate(data: Donator = { nume: "", suma: 0 }) {
   // outside
   const small_duration = 500;
 
-  const path = generatePath();
+  const x = getRandomPointX();
+  const y = HEIGHT - BUBBLE_RADIUS / 2;
+
+  const path = createPath({ x, y });
   bubbles_container.appendChild(path);
 
   const name = generateName(data);
@@ -254,4 +259,11 @@ function getTotalDuration() {
   // the smaller the distance
   // so we need a longer period to display the name
   return 8000 + 3000 / progress_ratio;
+}
+
+function getRandomPointX() {
+  const progress_width = getProgressWidth();
+  const min_x = WIDTH / 2 - progress_width / 2 + BUBBLE_RADIUS / 2;
+  const max_x = WIDTH / 2 + progress_width / 2 + BUBBLE_RADIUS / 2;
+  return getRandom(max_x, min_x);
 }

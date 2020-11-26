@@ -99,15 +99,7 @@ var oxygen_animation = (function (exports, anime) {
             x: start.x + step_x / 2 - amplitude,
             y: start.y + step_y / 2,
         };
-        // console.log({ inflexion_points });
-        return `M ${start.x} ${start.y} Q ${control_point.x} ${control_point.y}, ${inflexion_points[0].x} ${inflexion_points[0].y} T ${inflexion_points[1].x} ${inflexion_points[1].y} T ${inflexion_points[2].x} ${inflexion_points[2].y} T ${getCenter().x} ${getCenter().y}`;
-        // return `M ${start.x} ${start.y} Q 52.5 100, 95 60 T ${getCenter().x} ${getCenter().y}`;
-    }
-    function generatePath() {
-        // @todo maybe these should be passed, as we need the width of the inner circle
-        const x = getRandom(SCENE.w);
-        const y = SCENE.h - BUBBLE_RADIUS / 2;
-        return createPath({ x, y });
+        return `M ${start.x} ${start.y} Q ${control_point.x} ${control_point.y}, ${inflexion_points[0].x} ${inflexion_points[0].y} T ${inflexion_points[1].x} ${inflexion_points[1].y} T ${inflexion_points[2].x} ${inflexion_points[2].y} T ${start.x} ${getCenter().y}`;
     }
     function createPath(start) {
         const path = document.createElementNS(svgNS, "path");
@@ -166,6 +158,7 @@ var oxygen_animation = (function (exports, anime) {
     let text_donatori_val = null;
     let progress_circle = null;
     const WIDTH = 650;
+    const HEIGHT = WIDTH + 200;
     let total = 0;
     let suma = 0;
     let donatori = 0;
@@ -175,7 +168,7 @@ var oxygen_animation = (function (exports, anime) {
         }
         total = data.total_necesar;
         // store scene reference
-        scene = generateScene(WIDTH, WIDTH + 200);
+        scene = generateScene(WIDTH, HEIGHT);
         data.element.appendChild(scene);
         renderScene();
     }
@@ -208,7 +201,9 @@ var oxygen_animation = (function (exports, anime) {
             const total_duration = getTotalDuration();
             // outside
             const small_duration = 500;
-            const path = generatePath();
+            const x = getRandomPointX();
+            const y = HEIGHT - BUBBLE_RADIUS / 2;
+            const path = createPath({ x, y });
             bubbles_container.appendChild(path);
             const name = generateName(data);
             bubbles_container.appendChild(name);
@@ -351,6 +346,12 @@ var oxygen_animation = (function (exports, anime) {
         // the smaller the distance
         // so we need a longer period to display the name
         return 8000 + 3000 / progress_ratio;
+    }
+    function getRandomPointX() {
+        const progress_width = getProgressWidth();
+        const min_x = WIDTH / 2 - progress_width / 2 + BUBBLE_RADIUS / 2;
+        const max_x = WIDTH / 2 + progress_width / 2 + BUBBLE_RADIUS / 2;
+        return getRandom(max_x, min_x);
     }
 
     exports.animate = animate;
