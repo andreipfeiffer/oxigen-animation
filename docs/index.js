@@ -310,6 +310,7 @@ var oxygen_animation = (function (exports, anime) {
             while (index < list.length) {
                 animateOnce(list[index]);
                 index++;
+                index === list.length && (index = 0);
                 yield sleep(getRandom(6, 2));
             }
         });
