@@ -93,3 +93,14 @@ oxygen_animation.animate([
   // ...
 ]);
 ```
+
+<br />
+
+## Development
+
+```
+// start build system (TS compiler) in watch mode
+npm run watch
+```
+
+Open **`/docs/index.html`** in your browser, preferably with a Live Server.
