@@ -92,7 +92,16 @@ export function update(data: Progres) {
   text_donatori_val.textContent = String(donatori);
 }
 
-export async function animate(data: Donator = { nume: "", suma: 0 }) {
+export async function animate(data: Donator | Donator[]) {
+  if (Array.isArray(data)) {
+    console.log({ data });
+    animateAll(data);
+  } else {
+    animateOnce(data);
+  }
+}
+
+async function animateOnce(data: Donator = { nume: "", suma: 0 }) {
   if (!scene) {
     throw new Error("Not initialized! Call .init() first");
   }
@@ -177,6 +186,16 @@ export async function animate(data: Donator = { nume: "", suma: 0 }) {
     duration: 1200,
     delay: small_duration,
   });
+}
+
+async function animateAll(list: Donator[] = []) {
+  let index = 0;
+
+  while (index < list.length) {
+    animateOnce(list[index]);
+    index++;
+    await sleep(getRandom(6, 2));
+  }
 }
 
 function renderScene() {
@@ -338,4 +357,8 @@ function getRandomPointX() {
   const min_x = WIDTH / 2 - progress_width / 2 + BUBBLE_RADIUS;
   const max_x = WIDTH / 2 + progress_width / 2 - BUBBLE_RADIUS;
   return getRandom(max_x, min_x);
+}
+
+async function sleep(seconds: number) {
+  return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
 }

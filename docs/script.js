@@ -7,12 +7,14 @@ const stage = document.querySelector("#animation-stage");
 const init_form = document.querySelector("#init-form");
 const update_form = document.querySelector("#update-form");
 const animate_form = document.querySelector("#animate-form");
+const animate_all_form = document.querySelector("#animate-all-form");
 
 const necesar = init_form.querySelector('input[name="necesar"]');
 const strans = update_form.querySelector('input[name="strans"]');
 const donatori = update_form.querySelector('input[name="donatori"]');
 const nume = animate_form.querySelector('input[name="nume"]');
 const suma = animate_form.querySelector('input[name="suma"]');
+const arr_field = animate_all_form.querySelector("textarea");
 
 function init() {
   oxygen_animation.init({
@@ -35,6 +37,15 @@ function animate() {
   });
 }
 
+function animateAll() {
+  try {
+    const _arr = eval(arr_field.value);
+    oxygen_animation.animate(_arr);
+  } catch (e) {
+    console.warn(e);
+  }
+}
+
 init();
 update();
 
@@ -49,6 +60,15 @@ animate_form.addEventListener(
   (event) => {
     event.preventDefault();
     animate();
+  },
+  false
+);
+
+animate_all_form.addEventListener(
+  "submit",
+  (event) => {
+    event.preventDefault();
+    animateAll();
   },
   false
 );

@@ -221,7 +221,18 @@ var oxygen_animation = (function (exports, anime) {
         text_strans_val.textContent = formatNumber(suma);
         text_donatori_val.textContent = String(donatori);
     }
-    function animate(data = { nume: "", suma: 0 }) {
+    function animate(data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (Array.isArray(data)) {
+                console.log({ data });
+                animateAll(data);
+            }
+            else {
+                animateOnce(data);
+            }
+        });
+    }
+    function animateOnce(data = { nume: "", suma: 0 }) {
         return __awaiter(this, void 0, void 0, function* () {
             if (!scene) {
                 throw new Error("Not initialized! Call .init() first");
@@ -291,6 +302,16 @@ var oxygen_animation = (function (exports, anime) {
                 duration: 1200,
                 delay: small_duration,
             });
+        });
+    }
+    function animateAll(list = []) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let index = 0;
+            while (index < list.length) {
+                animateOnce(list[index]);
+                index++;
+                yield sleep(getRandom(6, 2));
+            }
         });
     }
     function renderScene() {
@@ -426,6 +447,11 @@ var oxygen_animation = (function (exports, anime) {
         const min_x = WIDTH / 2 - progress_width / 2 + BUBBLE_RADIUS;
         const max_x = WIDTH / 2 + progress_width / 2 - BUBBLE_RADIUS;
         return getRandom(max_x, min_x);
+    }
+    function sleep(seconds) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
+        });
     }
 
     exports.animate = animate;

@@ -80,8 +80,16 @@ oxygen_animation.update({
 ### .animate()
 
 ```js
+// you can pass an object:
 oxygen_animation.animate({
   nume: "Andrei P.",
   suma: 200,
 });
+
+// or an Array
+oxygen_animation.animate([
+  { nume: "Andrei", suma: 100 },
+  { nume: "Pfeiffer", suma: 200 },
+  // ...
+]);
 ```
