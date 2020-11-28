@@ -6,11 +6,7 @@ export default {
   input: "src/index.ts",
   output: {
     file: "docs/index.js",
-    format: "iife",
-    globals: {
-      animejs: "anime",
-    },
-    name: "oxygen_animation",
+    format: "es",
   },
   plugins: [
     resolve({ browser: true }),
