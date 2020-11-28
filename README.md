@@ -6,38 +6,6 @@ Animation for the Oxigen Website.
 
 ## Setup
 
-### 1. Install anime.js dependency:
-
-Include it from CDN:
-
-```
-<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
-```
-
-or
-
-Install it from npm:
-
-```
-npm install animejs
-```
-
-or simply [download](https://github.com/juliangarnier/anime/) it.
-
-<br />
-
-### 2. Install animation package:
-
-Include it from Github
-
-```
-<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
-```
-
-or
-
-Install it from Github:
-
 ```
 npm install git+https://github.com/andreipfeiffer/oxigen-animation.git
 ```

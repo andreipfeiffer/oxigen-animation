@@ -12,10 +12,6 @@ export default {
     },
     name: "oxygen_animation",
   },
-  external: [
-    ...Object.keys(pkg.dependencies || {}),
-    ...Object.keys(pkg.peerDependencies || {}),
-  ],
   plugins: [
     resolve({ browser: true }),
     typescript({
