@@ -1,6 +1,6 @@
 // oxygen_animation is a global identifier
 // if you use ES6 modules, you can also use it as:
-// import * as oxygen_animation from "./index";
+import * as oxygen_animation from "./index.js";
 
 const stage = document.querySelector("#animation-stage");
 
