@@ -10,7 +10,7 @@ const SCENE: Size = {
 export const BUBBLE_RADIUS = 40;
 
 export const enum Color {
-  primary = "#FF0202",
+  primary = "var(--color-primary)",
   black = "#000000",
   white = "#ffffff",
 }

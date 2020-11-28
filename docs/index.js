@@ -1350,7 +1350,7 @@ function generateName(data) {
         r: BUBBLE_RADIUS,
         fill: "#ffffff" /* white */,
     });
-    circle.setAttributeNS(null, "stroke", "#FF0202" /* primary */);
+    circle.setAttributeNS(null, "stroke", "var(--color-primary)" /* primary */);
     circle.setAttributeNS(null, "stroke-width", "5");
     const nume = drawText(data.nume, {
         fill: "#000000" /* black */,
@@ -1517,7 +1517,7 @@ function update(data) {
         easing: "easeOutQuart",
         duration: 1000,
     });
-    const title_color = isTitleInside(title_y) ? "#FF0202" /* primary */ : "#ffffff" /* white */;
+    const title_color = isTitleInside(title_y) ? "var(--color-primary)" /* primary */ : "#ffffff" /* white */;
     text_necesar.setAttributeNS(null, "fill", `${title_color}`);
     text_necesar_val.setAttributeNS(null, "fill", `${title_color}`);
     text_strans_val.textContent = formatNumber(suma);
@@ -1619,9 +1619,9 @@ function animateAll(list = []) {
 }
 function renderScene() {
     const { x, y } = getCenter();
-    total_circle = drawCircle({ cx: x, cy: y, r: x, fill: "#FF0202" /* primary */ });
+    total_circle = drawCircle({ cx: x, cy: y, r: x, fill: "var(--color-primary)" /* primary */ });
     total_circle.setAttributeNS(null, "paint-order", "stroke");
-    total_circle.setAttributeNS(null, "stroke", `${"#FF0202" /* primary */}44`);
+    total_circle.setAttributeNS(null, "stroke", `${"var(--color-primary)" /* primary */}44`);
     total_circle.setAttributeNS(null, "stroke-width", "0");
     scene.appendChild(total_circle);
     anime({
