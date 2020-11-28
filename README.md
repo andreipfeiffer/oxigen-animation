@@ -17,11 +17,7 @@ or simply [download](https://raw.githubusercontent.com/andreipfeiffer/oxigen-ani
 ## Usage
 
 ```js
-// if you have installed it form npm, you have to import it:
-import * as oxygen_animation from "oxygen-animation";
-
-// otherwise, you can use the global object "oxygen_animation":
-oxygen_animation;
+import * as oxigen_animation from "oxygen-animation";
 ```
 
 ### .init()
@@ -29,7 +25,7 @@ oxygen_animation;
 Should be called when you want to initialize the package:
 
 ```js
-oxygen_animation.init({
+oxigen_animation.init({
   // the container for the animation
   element: document.querySelector("#animation-scene"),
   total_necesar: 250000000,
@@ -39,7 +35,7 @@ oxygen_animation.init({
 ### .update()
 
 ```js
-oxygen_animation.update({
+oxigen_animation.update({
   total_strans: 1100000,
   donatori: 146,
 });
@@ -49,13 +45,13 @@ oxygen_animation.update({
 
 ```js
 // you can pass an object:
-oxygen_animation.animate({
+oxigen_animation.animate({
   nume: "Andrei P.",
   suma: 200,
 });
 
 // or an Array
-oxygen_animation.animate([
+oxigen_animation.animate([
   { nume: "Andrei", suma: 100 },
   { nume: "Pfeiffer", suma: 200 },
   // ...
