@@ -95,7 +95,7 @@ export function update(data: Progres) {
 export async function animate(data: Donator | Donator[]) {
   if (Array.isArray(data)) {
     console.log({ data });
-    animateAll(data);
+    animateLoop(data);
   } else {
     animateOnce(data);
   }
@@ -188,15 +188,13 @@ async function animateOnce(data: Donator = { nume: "", suma: 0 }) {
   });
 }
 
-async function animateAll(list: Donator[] = []) {
-  let index = 0;
+function animateLoop(list: Donator[] = [], index: number = 0) {
+  animateOnce(list[index]);
 
-  while (index < list.length) {
-    animateOnce(list[index]);
-    index++;
-    index === list.length && (index = 0);
-    await sleep(getRandom(6, 2));
-  }
+  let nextIndex = index + 1;
+  if (nextIndex === list.length) nextIndex = 0;
+
+  sleep(getRandom(6, 2)).then(() => animateLoop(list, nextIndex));
 }
 
 function renderScene() {
@@ -361,5 +359,7 @@ function getRandomPointX() {
 }
 
 async function sleep(seconds: number) {
-  return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
+  return new Promise((resolve) =>
+    setTimeout(() => requestAnimationFrame(resolve), seconds * 1000)
+  );
 }

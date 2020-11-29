@@ -1527,7 +1527,7 @@ function animate(data) {
     return __awaiter(this, void 0, void 0, function* () {
         if (Array.isArray(data)) {
             console.log({ data });
-            animateAll(data);
+            animateLoop(data);
         }
         else {
             animateOnce(data);
@@ -1606,16 +1606,12 @@ function animateOnce(data = { nume: "", suma: 0 }) {
         });
     });
 }
-function animateAll(list = []) {
-    return __awaiter(this, void 0, void 0, function* () {
-        let index = 0;
-        while (index < list.length) {
-            animateOnce(list[index]);
-            index++;
-            index === list.length && (index = 0);
-            yield sleep(getRandom(6, 2));
-        }
-    });
+function animateLoop(list = [], index = 0) {
+    animateOnce(list[index]);
+    let nextIndex = index + 1;
+    if (nextIndex === list.length)
+        nextIndex = 0;
+    sleep(getRandom(6, 2)).then(() => animateLoop(list, nextIndex));
 }
 function renderScene() {
     const { x, y } = getCenter();
@@ -1753,7 +1749,7 @@ function getRandomPointX() {
 }
 function sleep(seconds) {
     return __awaiter(this, void 0, void 0, function* () {
-        return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
+        return new Promise((resolve) => setTimeout(() => requestAnimationFrame(resolve), seconds * 1000));
     });
 }
 
