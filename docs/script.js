@@ -15,6 +15,7 @@ const donatori = update_form.querySelector('input[name="donatori"]');
 const nume = animate_form.querySelector('input[name="nume"]');
 const suma = animate_form.querySelector('input[name="suma"]');
 const arr_field = animate_all_form.querySelector("textarea");
+const stop_button = animate_all_form.querySelector("#stop");
 
 function init() {
   oxygen_animation.init({
@@ -46,6 +47,10 @@ function animateAll() {
   }
 }
 
+function stop() {
+  oxygen_animation.stop();
+}
+
 init();
 update();
 
@@ -54,6 +59,7 @@ strans.addEventListener("keyup", update, false);
 donatori.addEventListener("keyup", update, false);
 nume.addEventListener("keyup", animate, false);
 suma.addEventListener("keyup", animate, false);
+stop_button.addEventListener("click", stop, false);
 
 animate_form.addEventListener(
   "submit",

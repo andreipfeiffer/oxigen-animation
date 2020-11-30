@@ -58,6 +58,13 @@ oxigen_animation.animate([
 ]);
 ```
 
+### .stop()
+
+```js
+// stops the loop animation
+oxigen_animation.stop();
+```
+
 <br />
 
 ## Development

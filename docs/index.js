@@ -1478,6 +1478,8 @@ const OVERFLOW = 20;
 let total = 0;
 let suma = 0;
 let donatori = 0;
+let isLoopRunning = false;
+let timeout = 0;
 function init(data) {
     if (scene) {
         try {
@@ -1528,11 +1530,17 @@ function update(data) {
     text_strans_val.textContent = `${formatNumber(suma)} lei`;
     text_donatori_val.textContent = String(donatori);
 }
+function stop() {
+    timeout && clearTimeout(timeout);
+    isLoopRunning = false;
+}
 function animate(data) {
     return __awaiter(this, void 0, void 0, function* () {
         if (Array.isArray(data)) {
-            console.log({ data });
-            animateLoop(data);
+            if (!isLoopRunning) {
+                isLoopRunning = true;
+                animateLoop(data);
+            }
         }
         else {
             animateOnce(data);
@@ -1615,6 +1623,9 @@ function animateOnce(data = { nume: "", suma: 0 }) {
     });
 }
 function animateLoop(list = [], index = 0) {
+    if (!isLoopRunning) {
+        return;
+    }
     animateOnce(list[index]);
     let nextIndex = index + 1;
     if (nextIndex === list.length)
@@ -1757,8 +1768,8 @@ function getRandomPointX() {
 }
 function sleep(seconds) {
     return __awaiter(this, void 0, void 0, function* () {
-        return new Promise((resolve) => setTimeout(() => requestAnimationFrame(resolve), seconds * 1000));
+        return new Promise((resolve) => (timeout = window.setTimeout(() => requestAnimationFrame(resolve), seconds * 1000)));
     });
 }
 
-export { animate, init, update };
+export { animate, init, stop, update };
