@@ -1484,7 +1484,7 @@ function init(data) {
             return;
         }
         try {
-            scene.parentNode.removeChild(scene);
+            scene.remove();
         }
         catch (error) {
             console.warn(error);

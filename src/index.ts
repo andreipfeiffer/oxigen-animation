@@ -43,7 +43,7 @@ export function init(data: Init) {
     }
 
     try {
-      scene.parentNode.removeChild(scene);
+      scene.remove();
     } catch (error) {
       console.warn(error);
     }
