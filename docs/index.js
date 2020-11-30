@@ -1480,9 +1480,6 @@ let suma = 0;
 let donatori = 0;
 function init(data) {
     if (scene) {
-        if (data.total_necesar === total) {
-            return;
-        }
         try {
             scene.remove();
         }

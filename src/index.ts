@@ -38,10 +38,6 @@ let donatori = 0;
 
 export function init(data: Init) {
   if (scene) {
-    if (data.total_necesar === total) {
-      return;
-    }
-
     try {
       scene.remove();
     } catch (error) {
