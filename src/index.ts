@@ -137,8 +137,10 @@ async function animateOnce(data: Donator = { nume: "", suma: 0 }) {
     easing: "easeInSine",
     duration: total_duration,
     complete: function () {
-      bubbles_container.removeChild(path);
-      bubbles_container.removeChild(name);
+      try {
+        bubbles_container.removeChild(path);
+        bubbles_container.removeChild(name);
+      } catch (error) {}
     },
     update: function () {
       const str = name.style.transform;
