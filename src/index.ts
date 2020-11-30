@@ -38,7 +38,15 @@ let donatori = 0;
 
 export function init(data: Init) {
   if (scene) {
-    scene.parentNode.removeChild(scene);
+    if (data.total_necesar === total) {
+      return;
+    }
+
+    try {
+      scene.parentNode.removeChild(scene);
+    } catch (error) {
+      console.warn(error);
+    }
   }
 
   total = data.total_necesar;

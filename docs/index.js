@@ -1480,7 +1480,15 @@ let suma = 0;
 let donatori = 0;
 function init(data) {
     if (scene) {
-        scene.parentNode.removeChild(scene);
+        if (data.total_necesar === total) {
+            return;
+        }
+        try {
+            scene.parentNode.removeChild(scene);
+        }
+        catch (error) {
+            console.warn(error);
+        }
     }
     total = data.total_necesar;
     // store scene reference
