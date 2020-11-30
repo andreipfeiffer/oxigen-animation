@@ -88,7 +88,7 @@ export function update(data: Progres) {
   text_necesar.setAttributeNS(null, "fill", `${title_color}`);
   text_necesar_val.setAttributeNS(null, "fill", `${title_color}`);
 
-  text_strans_val.textContent = formatNumber(suma);
+  text_strans_val.textContent = `${formatNumber(suma)} lei`;
   text_donatori_val.textContent = String(donatori);
 }
 
@@ -236,7 +236,7 @@ function renderScene() {
   text_necesar.setAttributeNS(null, "transform", `translate(0, -5)`);
   scene.appendChild(text_necesar);
 
-  text_necesar_val = drawText(formatNumber(total), {
+  text_necesar_val = drawText(`${formatNumber(total)} lei`, {
     fill: Color.white,
     size: 37,
     x,
@@ -257,9 +257,9 @@ function renderScene() {
   });
   scene.appendChild(text_strans);
 
-  text_strans_val = drawText(formatNumber(suma), {
+  text_strans_val = drawText(`${formatNumber(suma)} lei`, {
     fill: Color.black,
-    size: 38,
+    size: 30,
     x,
     y: y - inner_text_offset + 5,
     valign: "hanging",

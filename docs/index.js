@@ -1520,7 +1520,7 @@ function update(data) {
     const title_color = isTitleInside(title_y) ? "var(--color-primary)" /* primary */ : "#ffffff" /* white */;
     text_necesar.setAttributeNS(null, "fill", `${title_color}`);
     text_necesar_val.setAttributeNS(null, "fill", `${title_color}`);
-    text_strans_val.textContent = formatNumber(suma);
+    text_strans_val.textContent = `${formatNumber(suma)} lei`;
     text_donatori_val.textContent = String(donatori);
 }
 function animate(data) {
@@ -1645,7 +1645,7 @@ function renderScene() {
     });
     text_necesar.setAttributeNS(null, "transform", `translate(0, -5)`);
     scene.appendChild(text_necesar);
-    text_necesar_val = drawText(formatNumber(total), {
+    text_necesar_val = drawText(`${formatNumber(total)} lei`, {
         fill: "#ffffff" /* white */,
         size: 37,
         x,
@@ -1663,9 +1663,9 @@ function renderScene() {
         valign: "baseline",
     });
     scene.appendChild(text_strans);
-    text_strans_val = drawText(formatNumber(suma), {
+    text_strans_val = drawText(`${formatNumber(suma)} lei`, {
         fill: "#000000" /* black */,
-        size: 38,
+        size: 30,
         x,
         y: y - inner_text_offset + 5,
         valign: "hanging",
