@@ -267,7 +267,7 @@ function renderScene() {
 
   const inner_text_offset = getInnerTextOffset();
 
-  text_strans = drawText("Suma stransa", {
+  text_strans = drawText("Suma strânsă", {
     fill: Color.black,
     size: 18,
     x,
