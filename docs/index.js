@@ -1356,19 +1356,17 @@ function generateName(data) {
         fill: "#000000" /* black */,
         size: 11,
         x: 0,
-        y: 0,
+        y: 5,
         valign: "baseline",
     });
-    nume.setAttributeNS(null, "transform", `translate(0, -5)`);
     nume.setAttributeNS(null, "opacity", "0.5");
     const suma = drawText(formatNumber(data.suma), {
         fill: "#000000" /* black */,
         size: 16,
         x: 0,
-        y: 0,
+        y: 5,
         valign: "hanging",
     });
-    suma.setAttributeNS(null, "transform", `translate(0, 5)`);
     // texts are placed inside another group, to animate them easier
     text_group.appendChild(nume);
     text_group.appendChild(suma);
@@ -1440,14 +1438,25 @@ function drawCircle(attrs) {
 }
 function drawText(value, attrs) {
     const { fill, x, y, size, valign = "middle" } = attrs;
+    let offset_y = 0;
+    switch (valign) {
+        case "baseline":
+            offset_y = -size / 2 - 5;
+            break;
+        case "hanging":
+            offset_y = size / 2 + 5;
+            break;
+    }
     const text = document.createElementNS(svgNS, "text");
     text.setAttributeNS(null, "text-anchor", "middle");
-    text.setAttributeNS(null, "alignment-baseline", valign);
+    // this is not fully supported
+    // text.setAttributeNS(null, "alignment-baseline", valign);
     text.setAttributeNS(null, "font-size", `${size}`);
     text.setAttributeNS(null, "font-family", `Montserrat`);
     text.setAttributeNS(null, "fill", fill);
     text.setAttributeNS(null, "x", `${x}`);
     text.setAttributeNS(null, "y", `${y}`);
+    text.setAttributeNS(null, "transform", `translate(0, ${offset_y})`);
     text.textContent = value;
     return text;
 }
@@ -1662,7 +1671,6 @@ function renderScene() {
         y: title_y,
         valign: "baseline",
     });
-    text_necesar.setAttributeNS(null, "transform", `translate(0, -5)`);
     scene.appendChild(text_necesar);
     text_necesar_val = drawText(`${formatNumber(total)} lei`, {
         fill: "#ffffff" /* white */,
@@ -1671,14 +1679,13 @@ function renderScene() {
         y: title_y,
         valign: "hanging",
     });
-    text_necesar_val.setAttributeNS(null, "transform", `translate(0, 5)`);
     scene.appendChild(text_necesar_val);
     const inner_text_offset = getInnerTextOffset();
-    text_strans = drawText("Suma stransa", {
+    text_strans = drawText("Suma strânsă", {
         fill: "#000000" /* black */,
         size: 18,
         x,
-        y: y - inner_text_offset - 5,
+        y: y - inner_text_offset,
         valign: "baseline",
     });
     scene.appendChild(text_strans);
@@ -1686,7 +1693,7 @@ function renderScene() {
         fill: "#000000" /* black */,
         size: 30,
         x,
-        y: y - inner_text_offset + 5,
+        y: y - inner_text_offset,
         valign: "hanging",
     });
     scene.appendChild(text_strans_val);
@@ -1694,7 +1701,7 @@ function renderScene() {
         fill: "#000000" /* black */,
         size: 18,
         x,
-        y: y + inner_text_offset - 5,
+        y: y + inner_text_offset,
         valign: "baseline",
     });
     scene.appendChild(text_donatori);
@@ -1702,23 +1709,21 @@ function renderScene() {
         fill: "#000000" /* black */,
         size: 40,
         x,
-        y: y + inner_text_offset + 5,
+        y: y + inner_text_offset,
         valign: "hanging",
     });
     scene.appendChild(text_donatori_val);
     anime({
         targets: [text_strans, text_strans_val],
         opacity: [0, 1],
-        translateY: [20, 0],
-        easing: "easeOutQuart",
+        easing: "linear",
         duration: 2000,
         delay: 500,
     });
     anime({
         targets: [text_donatori, text_donatori_val],
         opacity: [0, 1],
-        translateY: [-20, 0],
-        easing: "easeOutQuart",
+        easing: "linear",
         duration: 2000,
         delay: 500,
     });

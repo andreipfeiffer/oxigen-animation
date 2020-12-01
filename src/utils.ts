@@ -34,20 +34,18 @@ export function generateName(data: Donator) {
     fill: Color.black,
     size: 11,
     x: 0,
-    y: 0,
+    y: 5,
     valign: "baseline",
   });
-  nume.setAttributeNS(null, "transform", `translate(0, -5)`);
   nume.setAttributeNS(null, "opacity", "0.5");
 
   const suma = drawText(formatNumber(data.suma), {
     fill: Color.black,
     size: 16,
     x: 0,
-    y: 0,
+    y: 5,
     valign: "hanging",
   });
-  suma.setAttributeNS(null, "transform", `translate(0, 5)`);
 
   // texts are placed inside another group, to animate them easier
   text_group.appendChild(nume);
@@ -154,14 +152,27 @@ export function drawText(
 ) {
   const { fill, x, y, size, valign = "middle" } = attrs;
 
+  let offset_y = 0;
+
+  switch (valign) {
+    case "baseline":
+      offset_y = -size / 2 - 5;
+      break;
+    case "hanging":
+      offset_y = size / 2 + 5;
+      break;
+  }
+
   const text = document.createElementNS(svgNS, "text");
   text.setAttributeNS(null, "text-anchor", "middle");
-  text.setAttributeNS(null, "alignment-baseline", valign);
+  // this is not fully supported
+  // text.setAttributeNS(null, "alignment-baseline", valign);
   text.setAttributeNS(null, "font-size", `${size}`);
   text.setAttributeNS(null, "font-family", `Montserrat`);
   text.setAttributeNS(null, "fill", fill);
   text.setAttributeNS(null, "x", `${x}`);
   text.setAttributeNS(null, "y", `${y}`);
+  text.setAttributeNS(null, "transform", `translate(0, ${offset_y})`);
   text.textContent = value;
 
   return text;

@@ -252,7 +252,6 @@ function renderScene() {
     y: title_y,
     valign: "baseline",
   });
-  text_necesar.setAttributeNS(null, "transform", `translate(0, -5)`);
   scene.appendChild(text_necesar);
 
   text_necesar_val = drawText(`${formatNumber(total)} lei`, {
@@ -262,7 +261,6 @@ function renderScene() {
     y: title_y,
     valign: "hanging",
   });
-  text_necesar_val.setAttributeNS(null, "transform", `translate(0, 5)`);
   scene.appendChild(text_necesar_val);
 
   const inner_text_offset = getInnerTextOffset();
@@ -271,7 +269,7 @@ function renderScene() {
     fill: Color.black,
     size: 18,
     x,
-    y: y - inner_text_offset - 5,
+    y: y - inner_text_offset,
     valign: "baseline",
   });
   scene.appendChild(text_strans);
@@ -280,7 +278,7 @@ function renderScene() {
     fill: Color.black,
     size: 30,
     x,
-    y: y - inner_text_offset + 5,
+    y: y - inner_text_offset,
     valign: "hanging",
   });
   scene.appendChild(text_strans_val);
@@ -289,7 +287,7 @@ function renderScene() {
     fill: Color.black,
     size: 18,
     x,
-    y: y + inner_text_offset - 5,
+    y: y + inner_text_offset,
     valign: "baseline",
   });
   scene.appendChild(text_donatori);
@@ -298,7 +296,7 @@ function renderScene() {
     fill: Color.black,
     size: 40,
     x,
-    y: y + inner_text_offset + 5,
+    y: y + inner_text_offset,
     valign: "hanging",
   });
   scene.appendChild(text_donatori_val);
@@ -306,16 +304,14 @@ function renderScene() {
   anime({
     targets: [text_strans, text_strans_val],
     opacity: [0, 1],
-    translateY: [20, 0],
-    easing: "easeOutQuart",
+    easing: "linear",
     duration: 2000,
     delay: 500,
   });
   anime({
     targets: [text_donatori, text_donatori_val],
     opacity: [0, 1],
-    translateY: [-20, 0],
-    easing: "easeOutQuart",
+    easing: "linear",
     duration: 2000,
     delay: 500,
   });
