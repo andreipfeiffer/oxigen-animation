@@ -1,6 +1,6 @@
 # oxigen-animation
 
-Animation for the Oxigen Website.
+Animation for the [Oxigen for Timisoara](https://oxigen.primariatm.ro/) website.
 
 <br />
 
